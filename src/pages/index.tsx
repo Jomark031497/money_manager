@@ -2,16 +2,16 @@ import { CreateWallet, WalletCard, useWallets } from '@/features/wallets';
 import { motion } from 'framer-motion';
 import { GetServerSidePropsContext } from 'next';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { Button } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
 import { Session } from 'next-auth';
 import { toast } from 'react-toastify';
+import { getServerAuthSession } from '@/server/auth';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context);
+  const session = await getServerAuthSession(context);
 
   if (!session) {
     return {
