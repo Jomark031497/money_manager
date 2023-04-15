@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import { Figtree } from 'next/font/google';
+import { Navbar } from '@/components/Layouts';
+import { useSession } from 'next-auth/react';
 
 const font = Figtree({
   preload: true,
@@ -12,8 +14,11 @@ interface Props {
 }
 
 export const RootLayout = ({ children }: Props) => {
+  const { data: sessionData } = useSession();
+
   return (
     <>
+      {sessionData && <Navbar />}
       <main className={`${font.className}`}>{children}</main>
     </>
   );
