@@ -18,7 +18,6 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { isSubmitting, errors },
   } = useForm<ICreateWalletInputs>({
     resolver: zodResolver(CreateWalletSchema),
@@ -35,12 +34,6 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
     } catch (error) {
       toast.error('Card creation failed.');
     }
-  };
-
-  const convertToNumber = (value: string) => {
-    value = value.replace(/\D/g, ''); // Remove all non-digit characters
-
-    return parseInt(value, 10); // Parse the value to a number
   };
 
   return (
@@ -65,16 +58,11 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
 
           <InputField
             label="Initial Balance *"
-            currency
             {...register('balance', {
               valueAsNumber: true,
             })}
             formError={errors.balance}
             className="col-span-2"
-            onChange={(event) => {
-              const value = convertToNumber(event.target.value);
-              setValue('balance', value);
-            }}
           />
 
           <InputField
