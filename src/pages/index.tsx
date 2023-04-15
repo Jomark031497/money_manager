@@ -1,21 +1,29 @@
 import { CreateWallet, WalletCard, useWallets } from '@/features/wallets';
 import { motion } from 'framer-motion';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { getSession, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { Button } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
+import { getServerAuthSession } from '@/server/auth';
 
-export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getSession(ctx);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
+
   if (!session) {
-    return { redirect: { destination: '/login', permanent: false } };
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
   }
+
   return {
-    props: {},
+    props: { user: session.user },
   };
-};
+}
 
 export default function Home() {
   const { data: sessionData } = useSession();
