@@ -33,7 +33,6 @@ export const RootLayout = ({ children }: Props) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored"
       />
     </>
   );

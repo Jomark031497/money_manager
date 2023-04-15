@@ -10,18 +10,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const userId = req.query.id as string;
 
   if (req.method === 'GET') {
-    const query: Prisma.WalletFindManyArgs = {
+    const query: Prisma.TransactionFindManyArgs = {
       where: {
         userId,
       },
       orderBy: {
-        balance: 'desc',
+        date: 'desc',
+      },
+      include: {
+        wallet: true,
       },
     };
 
     const [data, count] = await prisma.$transaction([
-      prisma.wallet.findMany(query),
-      prisma.wallet.count({ where: query.where }),
+      prisma.transaction.findMany(query),
+      prisma.transaction.count({ where: query.where }),
     ]);
 
     return res.status(200).json({

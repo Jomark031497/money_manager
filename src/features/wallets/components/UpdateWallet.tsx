@@ -20,7 +20,6 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { isSubmitting, errors },
   } = useForm<IUpdateWalletInputs>({
     resolver: zodResolver(UpdateWalletSchema),
@@ -37,11 +36,6 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
     } catch (error) {
       toast.error('Wallet update failed.');
     }
-  };
-
-  const convertToNumber = (value: string) => {
-    value = value.replace(/\D/g, ''); // Remove all non-digit characters
-    return parseInt(value, 10); // Parse the value to a number
   };
 
   return (
@@ -64,19 +58,14 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
             className="col-span-2"
           />
 
-          <InputField
+          {/* <InputField
             label="Initial Balance *"
-            currency
             {...register('balance', {
               valueAsNumber: true,
             })}
             formError={errors.balance}
             className="col-span-2"
-            onChange={(event) => {
-              const value = convertToNumber(event.target.value);
-              setValue('balance', value);
-            }}
-          />
+          /> */}
 
           <InputField
             label="User ID"
