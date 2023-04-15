@@ -25,22 +25,37 @@ model Wallet {
 }
 
 model Transaction {
-  id          String          @id @default(cuid())
-  date        DateTime        @default(now())
-  name        String          @db.VarChar(150)
-  description String?         @db.VarChar(255)
-  amount      Float           @default(0)
+  id          String              @id @default(cuid())
+  date        DateTime            @default(now())
+  name        String              @db.VarChar(150)
+  description String?             @db.VarChar(255)
+  amount      Float               @default(0)
   type        TransactionType
-  wallet      Wallet          @relation(fields: [walletId], references: [id], onDelete: Cascade)
-  walletId    String          @map("wallet_id")
-  user        User            @relation(fields: [userId], references: [id])
-  userId      String          @map("user_id")
+  category    TransactionCategory
+  wallet      Wallet              @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  walletId    String              @map("wallet_id")
+  user        User                @relation(fields: [userId], references: [id])
+  userId      String              @map("user_id")
 }
 
 enum TransactionType {
   EXPENSE
   INCOME
   TRANSFER
+}
+
+enum TransactionCategory {
+  Food_And_Beverage
+  Housing
+  Savings
+  Transportation
+  Utilities
+  Personal_Care
+  Entertainment
+  Travel
+  Health
+  Gifts_And_Donation
+  Miscellaneous
 }
 
 // Next Auth

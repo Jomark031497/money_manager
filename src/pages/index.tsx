@@ -8,6 +8,7 @@ import { Button } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
 import { Session } from 'next-auth';
+import { toast } from 'react-toastify';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -58,7 +59,7 @@ export default function Home({ user }: { user: Session['user'] }) {
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 px-4 py-2">
             {isWalletsLoading ? (
               <div>Loading...</div>
             ) : wallets?.data.length ? (
@@ -74,7 +75,7 @@ export default function Home({ user }: { user: Session['user'] }) {
               ))
             ) : (
               <div className="text-center">
-                <p className="mb-4 text-xs text-gray-500">You have no wallets yet.</p>
+                <p className="text-md text-gray-500">You have no wallets yet.</p>
               </div>
             )}
           </div>
@@ -83,13 +84,20 @@ export default function Home({ user }: { user: Session['user'] }) {
         <section>
           <div className="mb-4 flex items-center justify-between">
             <p className="text-lg font-semibold text-gray-500">Transactions</p>
-            <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
+            <Button
+              onClick={() => {
+                if (!wallets?.count)
+                  return toast.error('You have no wallets. Please add a wallet first.');
+                openCreateTransaction();
+              }}
+              className="flex items-center gap-1"
+            >
               <AiOutlinePlus className="text-2xl" />
               Create Transaction
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 px-4 py-2">
             {isTransactionsLoading ? (
               <div>Loading...</div>
             ) : transactions?.data.length ? (
@@ -105,7 +113,7 @@ export default function Home({ user }: { user: Session['user'] }) {
               ))
             ) : (
               <div className="text-center">
-                <p className="mb-4 text-xs text-gray-500">You have no wallets yet.</p>
+                <p className="text-md text-gray-500">You have no transaction yet.</p>
               </div>
             )}
           </div>

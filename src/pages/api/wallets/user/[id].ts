@@ -14,6 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: {
         userId,
       },
+      orderBy: {
+        balance: 'desc',
+      },
     };
 
     const [data, count] = await prisma.$transaction([

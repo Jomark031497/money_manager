@@ -30,6 +30,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
     formState: { isSubmitting, errors },
   } = useForm<ICreateTransactionInputs>({
     resolver: zodResolver(CreateTransactionSchema),
+    defaultValues: { amount: 0 },
   });
 
   const onSubmit: SubmitHandler<ICreateTransactionInputs> = async (values) => {
@@ -98,7 +99,6 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
               label="Wallet"
               {...register('walletId')}
               formError={errors.type}
-              defaultValue={wallets.data[0].id}
               className="col-span-3"
             >
               {wallets.data.map((wallet) => (
