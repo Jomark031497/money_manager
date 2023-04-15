@@ -31,7 +31,7 @@ model Transaction {
   description String?         @db.VarChar(255)
   amount      Float           @default(0)
   type        TransactionType
-  wallet      Wallet          @relation(fields: [walletId], references: [id])
+  wallet      Wallet          @relation(fields: [walletId], references: [id], onDelete: Cascade)
   walletId    String          @map("wallet_id")
   user        User            @relation(fields: [userId], references: [id])
   userId      String          @map("user_id")
