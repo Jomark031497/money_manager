@@ -11,6 +11,6 @@ export const createWallet = async (payload: ICreateWalletInputs): Promise<Wallet
   });
 
   const data = await response.json();
-  if (!response.ok) throw new Error('Wallet creation failed', { cause: data });
+  if (!response.ok) throw new Error('Wallet creation failed');
   return data;
 };
