@@ -1,26 +1,25 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 
 export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getSession(ctx);
-
   if (!session) {
     return { redirect: { destination: '/login', permanent: false } };
   }
-
   return {
     props: { user: session.user },
   };
 };
 
 export default function Home() {
-  const { data: sessionData } = useSession();
-
-  console.log(sessionData);
-
   return (
     <>
-      <p className="bg-red-500 text-primary hover:bg-red-200">Hello world!</p>
+      <Head>
+        <title>Dashboard | Money Manager</title>
+      </Head>
+
+      <></>
     </>
   );
 }
