@@ -11,3 +11,6 @@ export * from './hooks/useTransactions';
 
 // Schemas
 export * from './schemas/create.schema';
+
+// Types
+export * from './types';

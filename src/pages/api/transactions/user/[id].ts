@@ -17,6 +17,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       orderBy: {
         date: 'desc',
       },
+      include: {
+        wallet: true,
+      },
     };
 
     const [data, count] = await prisma.$transaction([

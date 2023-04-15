@@ -1,8 +1,8 @@
-import { Transaction } from '@prisma/client';
+import { ITransactionWithWallet } from '@/features/transactions';
 
 export const getTransactions = async (
   id: string,
-): Promise<{ data: Transaction[]; count: number }> => {
+): Promise<{ data: ITransactionWithWallet[]; count: number }> => {
   const response = await fetch(`/api/transactions/user/${id}`, {
     method: 'GET',
   });

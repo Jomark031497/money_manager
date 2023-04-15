@@ -7,7 +7,8 @@ import { useSession } from 'next-auth/react';
 import {
   CreateTransactionSchema,
   ICreateTransactionInputs,
-  TransactionTypes,
+  TRANSACTION_CATEGORIES,
+  TRANSACTION_TYPES,
   createTransaction,
 } from '@/features/transactions';
 import { useWallets } from '@/features/wallets';
@@ -70,7 +71,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             formError={errors.type}
             className="col-span-2"
           >
-            {TransactionTypes.map((type) => (
+            {TRANSACTION_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type}
               </option>
@@ -85,6 +86,19 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
               valueAsNumber: true,
             })}
           />
+
+          <SelectField
+            label="Category"
+            {...register('category')}
+            formError={errors.category}
+            className="col-span-3"
+          >
+            {TRANSACTION_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category.replaceAll('_', ' ')}
+              </option>
+            ))}
+          </SelectField>
 
           <InputField
             label="User ID"

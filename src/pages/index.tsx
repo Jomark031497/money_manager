@@ -83,7 +83,7 @@ export default function Home({ user }: { user: Session['user'] }) {
 
         <section>
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-lg font-semibold text-gray-500">Transactions</p>
+            <p className="text-lg font-semibold text-gray-500">Recent Transactions</p>
             <Button
               onClick={() => {
                 if (!wallets?.count)
@@ -97,15 +97,15 @@ export default function Home({ user }: { user: Session['user'] }) {
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 px-4 py-2">
+          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 p-4">
             {isTransactionsLoading ? (
               <div>Loading...</div>
             ) : transactions?.data.length ? (
               transactions?.data.map((transaction, index) => (
                 <motion.div
                   key={transaction.id}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <TransactionCard transaction={transaction} />

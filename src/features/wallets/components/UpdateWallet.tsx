@@ -58,14 +58,14 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
             className="col-span-2"
           />
 
-          <InputField
+          {/* <InputField
             label="Initial Balance *"
             {...register('balance', {
               valueAsNumber: true,
             })}
             formError={errors.balance}
             className="col-span-2"
-          />
+          /> */}
 
           <InputField
             label="User ID"
