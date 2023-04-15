@@ -5,7 +5,7 @@ export const CreateWalletSchema = z.object({
     .string()
     .min(6, 'Wallet name must contain at least (6) characters long')
     .max(150, 'Wallet name must contain at most 150 character(s)'),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   balance: z.number().nonnegative(),
   userId: z.string().cuid(),
 });

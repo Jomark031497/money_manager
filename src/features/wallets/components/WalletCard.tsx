@@ -11,7 +11,7 @@ export const WalletCard = ({ wallet }: Props) => {
   return (
     <Link
       key={wallet.id}
-      href={`/`}
+      href={`/wallets/${wallet.id}`}
       className="grid min-h-[100px] grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-2 text-white shadow-xl"
     >
       <div className="col-span-3 flex items-center gap-2">

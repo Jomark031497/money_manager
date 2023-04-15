@@ -1,6 +1,6 @@
 import { Wallet } from '@prisma/client';
 
-export const getWallets = async (id: string) => {
+export const getWallets = async (id: string): Promise<{ data: Wallet[]; count: number }> => {
   const response = await fetch(`/api/wallets/user/${id}`, {
     method: 'GET',
   });
@@ -9,5 +9,5 @@ export const getWallets = async (id: string) => {
 
   if (!response.ok) throw new Error(data.message);
 
-  return data as { data: Wallet[]; count: number };
+  return data;
 };

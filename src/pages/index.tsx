@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Dashboard | Money Manager</title>
+        <title>Dashboard | Momney</title>
       </Head>
 
       <div className="mx-auto max-w-xl p-4">
