@@ -1,23 +1,29 @@
 import { DropdownMenu } from '@/components/Elements';
 import { DeleteWallet, UpdateWallet, WalletCard, useWallet } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
+import { getServerAuthSession } from '@/server/auth';
 import { Menu } from '@headlessui/react';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { getSession } from 'next-auth/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AiFillDelete, AiFillEdit, AiFillSetting } from 'react-icons/ai';
 
-export const getServerSideProps: GetServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getSession(ctx);
-  if (!session) {
-    return { redirect: { destination: '/login', permanent: false } };
-  }
-  return {
-    props: {},
-  };
-};
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
+}
 export default function Wallet() {
   const router = useRouter();
   const id = router.query.id as string;

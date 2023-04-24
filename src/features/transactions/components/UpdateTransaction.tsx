@@ -4,55 +4,49 @@ import { queryClient } from '@/lib/client';
 import { toast } from 'react-toastify';
 import { Button, InputField, Modal, SelectField, Spinner } from '@/components/Elements';
 import { useSession } from 'next-auth/react';
-
 import {
-  CreateTransactionSchema,
-  ICreateTransactionInputs,
+  ITransactionWithWallet,
+  IUpdateTransactionInputs,
   TRANSACTION_CATEGORIES,
   TRANSACTION_TYPES,
-  createTransaction,
+  UpdateTransactionSchema,
+  updateTransaction,
 } from '@/features/transactions';
-import { useWallets } from '@/features/wallets';
-import { formatDateWithTimezone } from '@/utils/formatDateWithTimezone';
 
 interface Props {
   isOpen: boolean;
   close: () => void;
+  transaction: ITransactionWithWallet;
 }
 
-export const CreateTransaction = ({ isOpen, close }: Props) => {
+export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
   const { data: sessionData } = useSession();
-
-  const { data: wallets } = useWallets(sessionData?.user.id);
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<ICreateTransactionInputs>({
-    resolver: zodResolver(CreateTransactionSchema),
-    defaultValues: { amount: 0 },
+  } = useForm<IUpdateTransactionInputs>({
+    resolver: zodResolver(UpdateTransactionSchema),
+    defaultValues: { ...transaction },
   });
 
-  const onSubmit: SubmitHandler<ICreateTransactionInputs> = async (values) => {
+  const onSubmit: SubmitHandler<IUpdateTransactionInputs> = async (values) => {
     try {
-      await createTransaction({
-        ...values,
-      });
+      await updateTransaction(transaction.id, values);
       reset();
-      queryClient.invalidateQueries(['transactions']);
-      queryClient.invalidateQueries(['wallets']);
-      toast.success('Transaction created successfully.');
+      queryClient.invalidateQueries(['transaction']);
+      toast.success('Transaction updated successfully.');
       close();
     } catch (error) {
-      toast.error('Transaction creation failed.');
+      toast.error('Transaction update failed.');
     }
   };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} title="Create Transaction" size="max-w-sm">
+      <Modal isOpen={isOpen} onClose={close} title="Update Transaction" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
           <InputField
             label="Name *"
@@ -65,7 +59,27 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             label="Description"
             {...register('description')}
             formError={errors.description}
+            className="col-span-3"
+          />
+
+          <InputField
+            label="Amount *"
+            {...register('amount', {
+              valueAsNumber: true,
+            })}
+            formError={errors.amount}
+            className="col-span-3"
+          />
+
+          <InputField
+            label="Date *"
+            type="date"
+            formError={errors.date}
             className="col-span-2"
+            {...register('date', {
+              valueAsDate: true,
+            })}
+            defaultValue={Date.now()}
           />
 
           <SelectField
@@ -80,26 +94,6 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
               </option>
             ))}
           </SelectField>
-
-          <InputField
-            label="Amount *"
-            formError={errors.amount}
-            className="col-span-2"
-            {...register('amount', {
-              valueAsNumber: true,
-            })}
-          />
-
-          <InputField
-            label="Date *"
-            type="date"
-            formError={errors.date}
-            className="col-span-2"
-            {...register('date', {
-              valueAsDate: true,
-            })}
-            defaultValue={formatDateWithTimezone(new Date(), 'yyyy-MM-dd')}
-          />
 
           <SelectField
             label="Category"
@@ -121,21 +115,6 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             formError={errors.userId}
             defaultValue={sessionData?.user.id}
           />
-
-          {wallets?.data && (
-            <SelectField
-              label="Wallet"
-              {...register('walletId')}
-              formError={errors.type}
-              className="col-span-3"
-            >
-              {wallets.data.map((wallet) => (
-                <option key={wallet.id} value={wallet.id}>
-                  {wallet.name}
-                </option>
-              ))}
-            </SelectField>
-          )}
 
           <Button
             type="submit"
