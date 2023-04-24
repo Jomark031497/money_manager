@@ -1,11 +1,7 @@
 import { TransactionType, TransactionCategory } from '@prisma/client';
 import { z } from 'zod';
 
-export const TRANSACTION_TYPES = [
-  TransactionType.EXPENSE,
-  TransactionType.INCOME,
-  TransactionType.TRANSFER,
-] as const;
+export const TRANSACTION_TYPES = [TransactionType.EXPENSE, TransactionType.INCOME, TransactionType.TRANSFER] as const;
 
 export const TRANSACTION_CATEGORIES = [
   TransactionCategory.Entertainment,

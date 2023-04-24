@@ -31,17 +31,9 @@ export default function Home({ user }: { user: Session['user'] }) {
   const { data: wallets, isLoading: isWalletsLoading } = useWallets(user.id);
   const { data: transactions, isLoading: isTransactionsLoading } = useTransactions(user.id);
 
-  const {
-    open: openCreateWallet,
-    isOpen: isCreateWalletOpen,
-    close: closeCreateWallet,
-  } = useModal();
+  const { open: openCreateWallet, isOpen: isCreateWalletOpen, close: closeCreateWallet } = useModal();
 
-  const {
-    open: openCreateTransaction,
-    isOpen: isCreateTransactionOpen,
-    close: closeCreateTransaction,
-  } = useModal();
+  const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
 
   return (
     <>
@@ -86,8 +78,7 @@ export default function Home({ user }: { user: Session['user'] }) {
             <p className="text-lg font-semibold text-gray-500">Recent Transactions</p>
             <Button
               onClick={() => {
-                if (!wallets?.count)
-                  return toast.error('You have no wallets. Please add a wallet first.');
+                if (!wallets?.count) return toast.error('You have no wallets. Please add a wallet first.');
                 openCreateTransaction();
               }}
               className="flex items-center gap-1"

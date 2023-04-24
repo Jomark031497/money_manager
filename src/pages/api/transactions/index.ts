@@ -20,8 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       prisma.wallet.update({
         where: { id: body.walletId },
         data: {
-          balance:
-            body.type === 'EXPENSE' ? { decrement: body.amount } : { increment: body.amount },
+          balance: body.type === 'EXPENSE' ? { decrement: body.amount } : { increment: body.amount },
         },
       }),
     ]);

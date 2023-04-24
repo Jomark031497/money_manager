@@ -48,12 +48,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     <>
       <Modal isOpen={isOpen} onClose={close} title="Update Transaction" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
-          <InputField
-            label="Name *"
-            {...register('name')}
-            formError={errors.name}
-            className="col-span-3"
-          />
+          <InputField label="Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
           <InputField
             label="Description"
@@ -82,12 +77,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             defaultValue={Date.now()}
           />
 
-          <SelectField
-            label="Type"
-            {...register('type')}
-            formError={errors.type}
-            className="col-span-2"
-          >
+          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-2">
             {TRANSACTION_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -95,12 +85,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             ))}
           </SelectField>
 
-          <SelectField
-            label="Category"
-            {...register('category')}
-            formError={errors.category}
-            className="col-span-3"
-          >
+          <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
             {TRANSACTION_CATEGORIES.map((category) => (
               <option key={category} value={category}>
                 {category.replaceAll('_', ' ')}

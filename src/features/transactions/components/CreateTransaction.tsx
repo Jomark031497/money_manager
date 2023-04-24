@@ -22,7 +22,6 @@ interface Props {
 
 export const CreateTransaction = ({ isOpen, close }: Props) => {
   const { data: sessionData } = useSession();
-
   const { data: wallets } = useWallets(sessionData?.user.id);
 
   const {
@@ -54,12 +53,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
     <>
       <Modal isOpen={isOpen} onClose={close} title="Create Transaction" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
-          <InputField
-            label="Name *"
-            {...register('name')}
-            formError={errors.name}
-            className="col-span-3"
-          />
+          <InputField label="Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
           <InputField
             label="Description"
@@ -68,12 +62,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             className="col-span-2"
           />
 
-          <SelectField
-            label="Type"
-            {...register('type')}
-            formError={errors.type}
-            className="col-span-2"
-          >
+          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-2">
             {TRANSACTION_TYPES.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -101,12 +90,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             defaultValue={formatDateWithTimezone(new Date(), 'yyyy-MM-dd')}
           />
 
-          <SelectField
-            label="Category"
-            {...register('category')}
-            formError={errors.category}
-            className="col-span-3"
-          >
+          <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
             {TRANSACTION_CATEGORIES.map((category) => (
               <option key={category} value={category}>
                 {category.replaceAll('_', ' ')}
@@ -123,12 +107,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
           />
 
           {wallets?.data && (
-            <SelectField
-              label="Wallet"
-              {...register('walletId')}
-              formError={errors.type}
-              className="col-span-3"
-            >
+            <SelectField label="Wallet" {...register('walletId')} formError={errors.type} className="col-span-3">
               {wallets.data.map((wallet) => (
                 <option key={wallet.id} value={wallet.id}>
                   {wallet.name}

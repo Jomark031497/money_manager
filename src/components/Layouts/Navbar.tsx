@@ -11,10 +11,7 @@ export const Navbar = () => {
 
   return (
     <header className="mx-auto flex h-16 max-w-2xl items-center justify-between bg-gray-100 p-2 px-4">
-      <Link
-        href="/"
-        className="flex gap-1 text-lg font-semibold text-primary transition-all hover:text-primary-dark"
-      >
+      <Link href="/" className="flex gap-1 text-lg font-semibold text-primary transition-all hover:text-primary-dark">
         <AiFillGold className="text-3xl" />
         Momney
       </Link>
