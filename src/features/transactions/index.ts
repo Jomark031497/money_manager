@@ -14,8 +14,7 @@ export * from './hooks/useTransactions';
 export * from './hooks/useTransaction';
 
 // Schemas
-export * from './schemas/create.schema';
-export * from './schemas/update.schema';
+export * from './schemas/transactions.schema';
 
 // Types
 export * from './types';

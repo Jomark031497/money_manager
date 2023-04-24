@@ -1,9 +1,9 @@
-import { IUpdateTransactionInputs } from '@/features/transactions';
+import { ITransactionInputs } from '@/features/transactions';
 import { Transaction } from '@prisma/client';
 
 export const updateTransaction = async (
   id: string,
-  payload: IUpdateTransactionInputs,
+  payload: ITransactionInputs['body'],
 ): Promise<Transaction> => {
   const response = await fetch(`/api/transactions/${id}`, {
     method: 'PUT',

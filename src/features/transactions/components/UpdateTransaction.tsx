@@ -5,11 +5,11 @@ import { toast } from 'react-toastify';
 import { Button, InputField, Modal, SelectField, Spinner } from '@/components/Elements';
 import { useSession } from 'next-auth/react';
 import {
+  ITransactionInputs,
   ITransactionWithWallet,
-  IUpdateTransactionInputs,
   TRANSACTION_CATEGORIES,
   TRANSACTION_TYPES,
-  UpdateTransactionSchema,
+  TransactionSchema,
   updateTransaction,
 } from '@/features/transactions';
 
@@ -27,12 +27,12 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     handleSubmit,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<IUpdateTransactionInputs>({
-    resolver: zodResolver(UpdateTransactionSchema),
+  } = useForm<Partial<ITransactionInputs['body']>>({
+    resolver: zodResolver(TransactionSchema.shape.body.partial()),
     defaultValues: { ...transaction },
   });
 
-  const onSubmit: SubmitHandler<IUpdateTransactionInputs> = async (values) => {
+  const onSubmit: SubmitHandler<ITransactionInputs['body']> = async (values) => {
     try {
       await updateTransaction(transaction.id, values);
       reset();

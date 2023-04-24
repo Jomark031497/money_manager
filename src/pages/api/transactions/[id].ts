@@ -1,4 +1,4 @@
-import { UpdateTransactionSchema } from '@/features/transactions';
+import { TransactionSchema } from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
 
@@ -8,9 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const session = await getServerAuthSession({ req, res });
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
-  const id = req.query.id as string;
+  const query = TransactionSchema.shape.query.parse(req.query);
+
   const transaction = await prisma.transaction.findUnique({
-    where: { id },
+    where: { id: query.id },
     include: { wallet: true },
   });
 
@@ -19,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === 'PUT') {
     if (!transaction) return res.status(404).json({ message: 'Transaction not found' });
 
-    const body = UpdateTransactionSchema.parse({
+    const body = TransactionSchema.shape.body.parse({
       ...req.body,
       date: new Date(req.body.date),
     });
@@ -34,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const [updatedTransaction] = await prisma.$transaction([
       prisma.transaction.update({
-        where: { id },
+        where: { id: query.id },
         data: body,
       }),
       prisma.wallet.update({

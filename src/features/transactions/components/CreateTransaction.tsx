@@ -6,8 +6,8 @@ import { Button, InputField, Modal, SelectField, Spinner } from '@/components/El
 import { useSession } from 'next-auth/react';
 
 import {
-  CreateTransactionSchema,
-  ICreateTransactionInputs,
+  TransactionSchema,
+  ITransactionInputs,
   TRANSACTION_CATEGORIES,
   TRANSACTION_TYPES,
   createTransaction,
@@ -30,12 +30,12 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
     handleSubmit,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<ICreateTransactionInputs>({
-    resolver: zodResolver(CreateTransactionSchema),
+  } = useForm<ITransactionInputs['body']>({
+    resolver: zodResolver(TransactionSchema.shape.body),
     defaultValues: { amount: 0 },
   });
 
-  const onSubmit: SubmitHandler<ICreateTransactionInputs> = async (values) => {
+  const onSubmit: SubmitHandler<ITransactionInputs['body']> = async (values) => {
     try {
       await createTransaction({
         ...values,
