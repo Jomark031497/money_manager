@@ -1,4 +1,4 @@
-import { CreateTransactionSchema } from '@/features/transactions';
+import { TransactionSchema } from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -8,7 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
   if (req.method === 'POST') {
-    const body = CreateTransactionSchema.parse(req.body);
+    const body = TransactionSchema.shape.body.parse({
+      ...req.body,
+      date: new Date(req.body.date),
+    });
 
     const [transaction] = await prisma.$transaction([
       prisma.transaction.create({
@@ -17,8 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       prisma.wallet.update({
         where: { id: body.walletId },
         data: {
-          balance:
-            body.type === 'EXPENSE' ? { decrement: body.amount } : { increment: body.amount },
+          balance: body.type === 'EXPENSE' ? { decrement: body.amount } : { increment: body.amount },
         },
       }),
     ]);

@@ -1,7 +1,7 @@
 import { ITransactionWithWallet } from '@/features/transactions';
 
-export const getTransactions = async (id: string): Promise<{ data: ITransactionWithWallet[]; count: number }> => {
-  const response = await fetch(`/api/transactions/user/${id}?skip=0&take=5`, {
+export const getTransaction = async (id: string): Promise<ITransactionWithWallet> => {
+  const response = await fetch(`/api/transactions/${id}`, {
     method: 'GET',
   });
 
