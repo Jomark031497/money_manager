@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier src --write",
-    "postinstall": "npx prisma generate"
+    "prettier": "prettier src --write"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
