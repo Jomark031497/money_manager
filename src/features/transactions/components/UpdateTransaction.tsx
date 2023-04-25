@@ -102,9 +102,9 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
           <InputField
             label="Date *"
             type="date"
-            formError={errors.createdAt}
+            formError={errors.purchaseDate}
             className="col-span-2"
-            {...register('createdAt', {
+            {...register('purchaseDate', {
               valueAsDate: true,
             })}
           />
