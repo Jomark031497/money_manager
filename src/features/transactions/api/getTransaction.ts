@@ -1,7 +1,7 @@
 import { ITransactionWithWallet } from '@/features/transactions';
 
 export const getTransaction = async (id: string): Promise<ITransactionWithWallet> => {
-  const response = await fetch(`/api/transactions/${id}`, {
+  const response = await fetch(`/api/txns/${id}`, {
     method: 'GET',
   });
 

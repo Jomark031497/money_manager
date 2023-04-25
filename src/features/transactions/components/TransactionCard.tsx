@@ -22,7 +22,7 @@ export const TransactionCard = ({ transaction }: Props) => {
         {transaction.type === 'EXPENSE' ? '-' : '+'} {toCurrency(transaction.amount)}
       </p>
       <p className="col-span-2 text-xs">{transaction.wallet.name}</p>
-      <p className="col-span-1 justify-self-end text-xs">{format(new Date(transaction.date), 'MMMM dd, yyyy')}</p>
+      <p className="col-span-1 justify-self-end text-xs">{format(new Date(transaction.createdAt), 'MMMM dd, yyyy')}</p>
       <p className="col-span-3 text-xs">{transaction.category.replaceAll('_', ' ')}</p>
       <p className="col-span-3 text-xs italic text-gray-400">{transaction.description}</p>
     </Link>

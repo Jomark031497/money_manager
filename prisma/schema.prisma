@@ -26,7 +26,6 @@ model Wallet {
 
 model Transaction {
   id          String              @id @default(cuid())
-  date        DateTime            @default(now())
   name        String              @db.VarChar(150)
   description String?             @db.VarChar(150)
   amount      Float               @default(0)
@@ -36,6 +35,8 @@ model Transaction {
   walletId    String              @map("wallet_id")
   user        User                @relation(fields: [userId], references: [id])
   userId      String              @map("user_id")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
 }
 
 enum TransactionType {

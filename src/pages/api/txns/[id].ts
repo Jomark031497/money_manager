@@ -19,8 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (req.method === 'PUT') {
     if (!transaction) return res.status(404).json({ message: 'Transaction not found' });
 
-    const date = new Date(req.body.date);
-    const body = TransactionSchema.shape.body.partial().parse({ ...req.body, date });
+    const createdAt = new Date(req.body.createdAt);
+    const body = TransactionSchema.shape.body.partial().parse({ ...req.body, createdAt });
     const wallet = transaction.wallet;
 
     const currentWalletBalance = wallet.balance;

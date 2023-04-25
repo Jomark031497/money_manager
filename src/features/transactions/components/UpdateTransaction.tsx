@@ -102,12 +102,11 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
           <InputField
             label="Date *"
             type="date"
-            formError={errors.date}
+            formError={errors.createdAt}
             className="col-span-2"
-            {...register('date', {
+            {...register('createdAt', {
               valueAsDate: true,
             })}
-            defaultValue={Date.now()}
           />
 
           <Button

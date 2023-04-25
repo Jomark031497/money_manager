@@ -12,7 +12,6 @@ import {
   createTransaction,
 } from '@/features/transactions';
 import { useWallets } from '@/features/wallets';
-import { formatDateWithTimezone } from '@/utils/formatDateWithTimezone';
 import { useMutation } from '@tanstack/react-query';
 
 interface Props {
@@ -110,12 +109,11 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
         <InputField
           label="Date *"
           type="date"
-          formError={errors.date}
+          formError={errors.createdAt}
           className="col-span-2"
-          {...register('date', {
+          {...register('createdAt', {
             valueAsDate: true,
           })}
-          defaultValue={formatDateWithTimezone(new Date(), 'yyyy-MM-dd')}
         />
 
         <Button

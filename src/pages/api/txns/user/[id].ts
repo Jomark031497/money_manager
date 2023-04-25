@@ -1,7 +1,6 @@
 import { TransactionSchema } from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
-import { Prisma } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,23 +9,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const query = TransactionSchema.shape.query.parse(req.query);
 
-  const skip = parseInt(query.skip ?? '0');
-  const take = parseInt(query.take ?? '5');
+  // const skip = parseInt(query.skip ?? '0');
+  // const take = parseInt(query.take ?? '5');
 
   if (req.method === 'GET') {
-    const findManyQuery: Prisma.TransactionFindManyArgs = {
-      where: { userId: query.id },
-      orderBy: { date: 'desc' },
-      include: { wallet: true },
-    };
+    // const findManyQuery: Prisma.TransactionFindManyArgs = {
+    //   where: { userId: query.id },
+    //   include: { wallet: true },
+    // };
 
     const [data, count] = await prisma.$transaction([
       prisma.transaction.findMany({
-        ...findManyQuery,
-        skip: skip * take,
-        take,
+        where: { userId: query.id },
+        include: { wallet: true },
+        orderBy: { createdAt: 'desc' },
       }),
-      prisma.transaction.count({ where: findManyQuery.where }),
+      prisma.transaction.count({ where: { userId: query.id } }),
     ]);
 
     return res.status(200).json({
