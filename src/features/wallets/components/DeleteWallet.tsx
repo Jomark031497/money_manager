@@ -2,6 +2,7 @@ import { Modal, Button, Spinner } from '@/components/Elements';
 import { deleteWallet } from '@/features/wallets';
 import { queryClient } from '@/lib/client';
 import { Wallet } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { AiOutlineWarning } from 'react-icons/ai';
@@ -14,19 +15,24 @@ interface Props {
 }
 
 export const DeleteWallet = ({ isOpen, close, wallet }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteWallet(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['wallets']);
+      close();
+      router.push('/');
+      toast.success('Wallet deleted successfully', { delay: 500 });
+    },
+  });
 
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-
-      await deleteWallet(wallet.id);
-      queryClient.invalidateQueries(['wallets']);
-      toast.success('Wallet deleted successfully');
-      close();
-      router.push('/');
+      mutation.mutate(wallet.id);
     } catch (error) {
       return toast.error('Wallet Delete Failed');
     } finally {

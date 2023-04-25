@@ -1,7 +1,7 @@
-import { ICreateWalletInputs } from '@/features/wallets';
+import { IWalletInputs } from '@/features/wallets';
 import { Wallet } from '@prisma/client';
 
-export const createWallet = async (payload: ICreateWalletInputs): Promise<Wallet> => {
+export const createWallet = async (payload: IWalletInputs['body']): Promise<Wallet> => {
   const response = await fetch('/api/wallets', {
     method: 'POST',
     body: JSON.stringify(payload),

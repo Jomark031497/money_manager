@@ -1,4 +1,4 @@
-import { IUpdateWalletInputs, UpdateWalletSchema, updateWallet } from '@/features/wallets';
+import { IWalletInputs, WalletSchema, updateWallet } from '@/features/wallets';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queryClient } from '@/lib/client';
@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { Button, InputField, Modal, Spinner } from '@/components/Elements';
 import { useSession } from 'next-auth/react';
 import { Wallet } from '@prisma/client';
+import { useMutation } from '@tanstack/react-query';
 
 interface Props {
   isOpen: boolean;
@@ -21,18 +22,24 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
     handleSubmit,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<IUpdateWalletInputs>({
-    resolver: zodResolver(UpdateWalletSchema),
+  } = useForm<Partial<IWalletInputs['body']>>({
+    resolver: zodResolver(WalletSchema.shape.body.partial()),
     defaultValues: { ...wallet },
   });
 
-  const onSubmit: SubmitHandler<IUpdateWalletInputs> = async (values) => {
-    try {
-      await updateWallet(wallet.id, values);
-      reset();
+  const mutation = useMutation({
+    mutationFn: (values: Partial<IWalletInputs['body']>) => updateWallet(wallet.id, values),
+    onSuccess: () => {
       queryClient.invalidateQueries(['wallet']);
-      toast.success('Wallet updated successfully.');
+      reset();
       close();
+      toast.success('Wallet updated successfully.', { delay: 500 });
+    },
+  });
+
+  const onSubmit: SubmitHandler<Partial<IWalletInputs['body']>> = async (values) => {
+    try {
+      mutation.mutate(values);
     } catch (error) {
       toast.error('Wallet update failed.');
     }
@@ -43,7 +50,7 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
       <Modal isOpen={isOpen} onClose={close} title="Update Wallet" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
           <InputField
-            label="Name *"
+            label="Wallet Name *"
             placeholder="Acme Debit Card, X Digital Wallet"
             {...register('name')}
             formError={errors.name}
@@ -51,21 +58,12 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
           />
 
           <InputField
-            label="Description"
+            label="Description *"
             placeholder="Payroll, Savings"
             {...register('description')}
             formError={errors.description}
             className="col-span-2"
           />
-
-          {/* <InputField
-            label="Initial Balance *"
-            {...register('balance', {
-              valueAsNumber: true,
-            })}
-            formError={errors.balance}
-            className="col-span-2"
-          /> */}
 
           <InputField
             label="User ID"
@@ -80,14 +78,7 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
             disabled={isSubmitting}
             className="col-span-3 flex items-center justify-center gap-2 py-2"
           >
-            {isSubmitting ? (
-              <>
-                Submitting
-                <Spinner />
-              </>
-            ) : (
-              'Create'
-            )}
+            {isSubmitting ? <Spinner /> : 'Create'}
           </Button>
         </form>
       </Modal>

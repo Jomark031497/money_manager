@@ -13,10 +13,10 @@ export const Button = forwardRef<HTMLButtonElement, Props>(({ children, primary 
       ref={ref}
       {...rest}
       className={classNames(
-        'rounded-lg border px-4 py-1 text-sm font-semibold transition-all',
+        'rounded-full border px-2 py-1 text-sm font-semibold transition-all',
         primary
           ? 'border-primary text-primary hover:border-primary-dark hover:text-primary-dark'
-          : 'border-secondary text-secondary hover:border-secondary-light hover:text-secondary-light',
+          : 'bg:text-secondary border-secondary text-secondary hover:border-transparent hover:bg-secondary hover:text-white',
         className,
       )}
     >

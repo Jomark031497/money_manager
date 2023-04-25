@@ -1,4 +1,4 @@
-import { UpdateWalletSchema } from '@/features/wallets';
+import { WalletSchema } from '@/features/wallets';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -7,10 +7,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const session = await getServerAuthSession({ req, res });
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
-  const id = req.query.id as string;
+  const query = WalletSchema.shape.query.parse(req.query);
 
   const wallet = await prisma.wallet.findFirst({
-    where: { id, userId: session.user.id },
+    where: { id: query.id, userId: session.user.id },
   });
 
   if (!wallet) return res.status(404).json({ message: 'Wallet not found' });
@@ -20,10 +20,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'PUT') {
-    const body = UpdateWalletSchema.parse(req.body);
+    const body = WalletSchema.shape.body.partial().parse(req.body);
 
     const updatedWallet = await prisma.wallet.update({
-      where: { id },
+      where: { id: query.id },
       data: body,
     });
 
