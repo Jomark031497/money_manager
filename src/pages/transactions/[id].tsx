@@ -1,4 +1,4 @@
-import { Button, DropdownMenu } from '@/components/Elements';
+import { DropdownMenu } from '@/components/Elements';
 import { UpdateTransaction, useTransaction } from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
 import { getServerAuthSession } from '@/server/auth';
@@ -35,7 +35,6 @@ export default function Transaction() {
   const { data: transaction, isLoading } = useTransaction(id);
 
   const { open: openUpdate, isOpen: isUpdateOpen, close: closeUpdate } = useModal();
-  const { open: openDelete, isOpen: isDeleteOpen, close: closeDelete } = useModal();
 
   if (!transaction) return <p>Loading</p>;
 
@@ -74,7 +73,6 @@ export default function Transaction() {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    onClick={openDelete}
                     className={`${
                       active ? 'bg-secondary text-white' : 'text-gray-500'
                     } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm`}
