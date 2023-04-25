@@ -32,7 +32,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     defaultValues: { ...transaction },
   });
 
-  const onSubmit: SubmitHandler<ITransactionInputs['body']> = async (values) => {
+  const onSubmit: SubmitHandler<Partial<ITransactionInputs['body']>> = async (values) => {
     try {
       await updateTransaction(transaction.id, values);
       reset();

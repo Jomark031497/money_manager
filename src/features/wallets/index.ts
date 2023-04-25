@@ -10,11 +10,12 @@ export * from './components/WalletCard';
 export * from './components/CreateWallet';
 export * from './components/UpdateWallet';
 export * from './components/DeleteWallet';
+export * from './components/Wallets';
+export * from './components/WalletCardSkeleton';
 
 // Hooks
 export * from './hooks/useWallets';
 export * from './hooks/useWallet';
 
 // Schemas
-export * from './schemas/create.schema';
-export * from './schemas/update.schema';
+export * from './schemas/wallets.schema';

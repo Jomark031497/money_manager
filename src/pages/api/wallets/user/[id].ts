@@ -1,3 +1,4 @@
+import { WalletSchema } from '@/features/wallets';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
 import { Prisma } from '@prisma/client';
@@ -7,21 +8,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const session = await getServerAuthSession({ req, res });
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
-  const userId = req.query.id as string;
+  const query = WalletSchema.shape.query.parse(req.query);
 
   if (req.method === 'GET') {
-    const query: Prisma.WalletFindManyArgs = {
-      where: {
-        userId,
-      },
-      orderBy: {
-        balance: 'desc',
-      },
+    const findManyOptions: Prisma.WalletFindManyArgs = {
+      where: { userId: query.id },
+      orderBy: { balance: 'desc' },
     };
 
     const [data, count] = await prisma.$transaction([
-      prisma.wallet.findMany(query),
-      prisma.wallet.count({ where: query.where }),
+      prisma.wallet.findMany(findManyOptions),
+      prisma.wallet.count({ where: findManyOptions.where }),
     ]);
 
     return res.status(200).json({

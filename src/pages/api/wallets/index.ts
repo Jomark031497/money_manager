@@ -1,4 +1,4 @@
-import { CreateWalletSchema } from '@/features/wallets';
+import { WalletSchema } from '@/features/wallets';
 import { getServerAuthSession } from '@/server/auth';
 import { prisma } from '@/server/db';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -8,8 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
   if (req.method === 'POST') {
-    // Validate inputs
-    const body = CreateWalletSchema.parse(req.body);
+    const body = WalletSchema.shape.body.parse(req.body);
 
     const wallet = await prisma.wallet.create({
       data: body,

@@ -1,5 +1,5 @@
 import { DropdownMenu } from '@/components/Elements';
-import { DeleteWallet, UpdateWallet, WalletCard, useWallet } from '@/features/wallets';
+import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeleton, useWallet } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
 import { getServerAuthSession } from '@/server/auth';
 import { Menu } from '@headlessui/react';
@@ -49,7 +49,7 @@ export default function Wallet() {
             <DropdownMenu
               label={
                 <>
-                  <AiFillSetting className="text-2xl" />
+                  <AiFillSetting className="text-xl" />
                   Manage Wallet
                 </>
               }
@@ -60,7 +60,7 @@ export default function Wallet() {
                     onClick={openUpdate}
                     className={`${
                       active ? 'bg-secondary text-white' : 'text-gray-500'
-                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm`}
+                    } flex w-full items-center gap-1 rounded-md p-2 text-sm transition-all`}
                   >
                     <AiFillEdit className="text-lg" />
                     Edit
@@ -72,8 +72,8 @@ export default function Wallet() {
                   <button
                     onClick={openDelete}
                     className={`${
-                      active ? 'bg-secondary text-white' : 'text-gray-500'
-                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm`}
+                      active ? 'bg-red-500 text-white' : ''
+                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm text-red-500 transition-all`}
                   >
                     <AiFillDelete className="text-lg" />
                     Delete
@@ -84,7 +84,7 @@ export default function Wallet() {
           </div>
 
           {isLoading ? (
-            <p>Loading...</p>
+            <WalletCardSkeleton />
           ) : (
             <>
               <WalletCard wallet={wallet} />
