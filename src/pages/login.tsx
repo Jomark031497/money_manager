@@ -4,6 +4,7 @@ import { FaDiscord } from 'react-icons/fa';
 import { BiTestTube } from 'react-icons/bi';
 import { GetServerSidePropsContext } from 'next';
 import { getServerAuthSession } from '@/server/auth';
+import { toast } from 'react-toastify';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -42,7 +43,10 @@ export default function Login() {
             <FaDiscord className="text-2xl" />
             Login via Discord
           </button>
-          <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-contrast shadow-primary-light transition-all hover:bg-primary-dark">
+          <button
+            onClick={() => toast.info('Coming Soon!')}
+            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-contrast shadow-primary-light transition-all hover:bg-primary-dark"
+          >
             <BiTestTube className="text-2xl" />
             Try Demo Version
           </button>

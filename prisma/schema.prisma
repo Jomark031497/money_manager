@@ -28,7 +28,7 @@ model Transaction {
   id          String              @id @default(cuid())
   date        DateTime            @default(now())
   name        String              @db.VarChar(150)
-  description String?             @db.VarChar(255)
+  description String?             @db.VarChar(150)
   amount      Float               @default(0)
   type        TransactionType
   category    TransactionCategory

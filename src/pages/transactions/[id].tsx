@@ -1,5 +1,5 @@
 import { DropdownMenu } from '@/components/Elements';
-import { UpdateTransaction, useTransaction } from '@/features/transactions';
+import { DeleteTransaction, TransactionCardSkeleton, UpdateTransaction, useTransaction } from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
 import { getServerAuthSession } from '@/server/auth';
 import { classNames } from '@/utils/classNames';
@@ -32,11 +32,11 @@ export default function Transaction() {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const { data: transaction, isLoading } = useTransaction(id);
-
+  const { data: transaction, isLoading, isError } = useTransaction(id);
   const { open: openUpdate, isOpen: isUpdateOpen, close: closeUpdate } = useModal();
+  const { open: openDelete, isOpen: isDeleteOpen, close: closeDelete } = useModal();
 
-  if (!transaction) return <p>Loading</p>;
+  if (isError) return <div>Error loading wallet</div>;
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function Transaction() {
             <DropdownMenu
               label={
                 <>
-                  <AiFillSetting className="text-2xl" />
+                  <AiFillSetting className="text-xl" />
                   Manage Transaction
                 </>
               }
@@ -63,7 +63,7 @@ export default function Transaction() {
                     onClick={openUpdate}
                     className={`${
                       active ? 'bg-secondary text-white' : 'text-gray-500'
-                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm`}
+                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm transition-all`}
                   >
                     <AiFillEdit className="text-lg" />
                     Edit
@@ -73,9 +73,10 @@ export default function Transaction() {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={openDelete}
                     className={`${
-                      active ? 'bg-secondary text-white' : 'text-gray-500'
-                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm`}
+                      active ? 'bg-red-500 text-white' : 'text-gray-500'
+                    } flex w-full items-center gap-1 rounded-md px-2 py-2 text-sm text-red-500 transition-all`}
                   >
                     <AiFillDelete className="text-lg" />
                     Delete
@@ -85,7 +86,10 @@ export default function Transaction() {
             </DropdownMenu>
           </section>
           {isLoading ? (
-            <p>Loading...</p>
+            <>
+              <TransactionCardSkeleton />
+              <TransactionCardSkeleton />
+            </>
           ) : (
             <>
               <div className="rounded-xl shadow">
@@ -95,37 +99,37 @@ export default function Transaction() {
                 </div>
 
                 <div className="p-2">
-                  <div className="grid grid-cols-4 border-b border-dashed p-2">
+                  <div className="grid grid-cols-4 gap-16 border-b border-dashed p-2">
                     <p className="col-span-1 text-sm text-gray-500">Name</p>
-                    <p className="col-span-3 font-semibold">{transaction.name}</p>
+                    <p className="col-span-3 text-sm font-semibold">{transaction.name}</p>
                   </div>
-                  <div className="grid grid-cols-4 border-b border-dashed p-2">
+                  <div className="grid grid-cols-4 gap-16 border-b border-dashed p-2">
                     <p className="col-span-1 text-sm text-gray-500">Description</p>
-                    <p className="col-span-3">{transaction.description || 'N/A'}</p>
+                    <p className="col-span-3 text-sm">{transaction.description || 'N/A'}</p>
                   </div>
-                  <div className="grid grid-cols-4 border-b border-dashed p-2">
+                  <div className="grid grid-cols-4 gap-16 border-b border-dashed p-2">
                     <p className="col-span-1 text-sm text-gray-500">Amount</p>
                     <p
                       className={classNames(
-                        'col-span-3',
+                        'col-span-3 text-sm',
                         transaction.type === 'EXPENSE' ? 'text-red-500' : 'text-green-500',
                       )}
                     >
-                      {transaction.type === 'EXPENSE' ? '-' : '+'} {toCurrency(transaction.amount)}
+                      {toCurrency(transaction.amount)}
                     </p>
                   </div>
-                  <div className="grid grid-cols-4 border-b border-dashed p-2">
+                  <div className="grid grid-cols-4 gap-16 border-b border-dashed p-2">
                     <p className="col-span-1 text-sm text-gray-500">Wallet</p>
-                    <p className="col-span-3">{transaction.wallet.name}</p>
+                    <p className="col-span-3 text-sm">{transaction.wallet.name}</p>
                   </div>
-                  <div className="grid grid-cols-4 p-2">
+                  <div className="grid grid-cols-4 gap-16 p-2">
                     <p className="col-span-1 text-sm text-gray-500">Category</p>
-                    <p className="col-span-3">{transaction.category.replaceAll('_', ' ')}</p>
+                    <p className="col-span-3 text-sm">{transaction.category.replaceAll('_', ' ')}</p>
                   </div>
                 </div>
               </div>
-
               <UpdateTransaction isOpen={isUpdateOpen} close={closeUpdate} transaction={transaction} />
+              <DeleteTransaction isOpen={isDeleteOpen} close={closeDelete} transaction={transaction} />
             </>
           )}
         </div>

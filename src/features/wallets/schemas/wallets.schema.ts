@@ -4,7 +4,7 @@ export const WalletSchema = z.object({
   body: z.object({
     name: z.string().min(3).max(150),
     description: z.string().max(50),
-    balance: z.number(),
+    balance: z.number().nonnegative(),
     userId: z.string().cuid(),
   }),
   query: z.object({
