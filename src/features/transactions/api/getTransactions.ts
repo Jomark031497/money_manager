@@ -1,7 +1,23 @@
 import { ITransactionWithWallet } from '@/features/transactions';
 
-export const getTransactions = async (id: string): Promise<{ data: ITransactionWithWallet[]; count: number }> => {
-  const response = await fetch(`/api/transactions/user/${id}?skip=0&take=5`, {
+interface Props {
+  id: string;
+  options?: {
+    filterColumn?: string;
+    filterValue?: string;
+  };
+}
+
+export const getTransactions = async ({
+  id,
+  options,
+}: Props): Promise<{ data: ITransactionWithWallet[]; count: number }> => {
+  const url = new URL(`/api/txns/user/${id}`, process.env.NEXT_PUBLIC_BASE_URL);
+
+  options?.filterColumn && url.searchParams.set('filterColumn', options.filterColumn);
+  options?.filterValue && url.searchParams.set('filterValue', options.filterValue);
+
+  const response = await fetch(url, {
     method: 'GET',
   });
 

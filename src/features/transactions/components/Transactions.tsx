@@ -8,7 +8,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 export const Transactions = () => {
   const { data: sessionData } = useSession();
 
-  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions(sessionData?.user.id);
+  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({ id: sessionData?.user.id });
   const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
 
   return (

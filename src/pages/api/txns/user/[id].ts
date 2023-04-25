@@ -10,22 +10,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const query = TransactionSchema.shape.query.parse(req.query);
 
-  const skip = parseInt(query.skip ?? '0');
-  const take = parseInt(query.take ?? '5');
+  // const skip = parseInt(query.skip ?? '0');
+  // const take = parseInt(query.take ?? '5');
+  const filterValue = query.filterValue;
+  const filterColumn = query.filterColumn as string;
 
   if (req.method === 'GET') {
     const findManyQuery: Prisma.TransactionFindManyArgs = {
-      where: { userId: query.id },
-      orderBy: { date: 'desc' },
       include: { wallet: true },
+      orderBy: { createdAt: 'desc' },
+      where: {
+        userId: query.id,
+        [filterColumn]: filterValue,
+      },
     };
 
     const [data, count] = await prisma.$transaction([
-      prisma.transaction.findMany({
-        ...findManyQuery,
-        skip: skip * take,
-        take,
-      }),
+      prisma.transaction.findMany(findManyQuery),
       prisma.transaction.count({ where: findManyQuery.where }),
     ]);
 

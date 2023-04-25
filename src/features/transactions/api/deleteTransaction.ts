@@ -1,5 +1,5 @@
 export const deleteTransaction = async (id: string) => {
-  const response = await fetch(`/api/transactions/${id}`, {
+  const response = await fetch(`/api/txns/${id}`, {
     method: 'DELETE',
   });
 

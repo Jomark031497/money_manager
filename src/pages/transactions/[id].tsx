@@ -86,16 +86,18 @@ export default function Transaction() {
             </DropdownMenu>
           </section>
           {isLoading ? (
-            <>
+            <div role="status" className="flex flex-col gap-2">
               <TransactionCardSkeleton />
               <TransactionCardSkeleton />
-            </>
+            </div>
           ) : (
             <>
               <div className="rounded-xl shadow">
                 <div className="rounded-t-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white">
                   <p className="mb-1 text-xs font-semibold">Transaction Date</p>
-                  <p className="text-sm font-semibold">{format(new Date(transaction.date), 'MMMM dd, yyyy')}</p>
+                  <p className="text-sm font-semibold">
+                    {format(new Date(transaction.createdAt), 'MMMM dd, yyyy hh:mm aa')}
+                  </p>
                 </div>
 
                 <div className="p-2">

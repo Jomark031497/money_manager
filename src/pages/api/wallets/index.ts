@@ -19,12 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await prisma.transaction.create({
       data: {
         name: 'Initial Balance',
+        description: `${wallet.name} - Initial Balance`,
         category: 'Miscellaneous',
         type: 'INCOME',
-        amount: body.balance,
+        amount: wallet.balance,
+        userId: wallet.userId,
         walletId: wallet.id,
-        description: 'Initial Balance',
-        userId: session.user.id,
       },
     });
 

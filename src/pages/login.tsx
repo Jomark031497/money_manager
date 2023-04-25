@@ -1,6 +1,6 @@
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
-import { FaDiscord } from 'react-icons/fa';
+import { FaDiscord, FaGoogle } from 'react-icons/fa';
 import { BiTestTube } from 'react-icons/bi';
 import { GetServerSidePropsContext } from 'next';
 import { getServerAuthSession } from '@/server/auth';
@@ -42,6 +42,18 @@ export default function Login() {
           >
             <FaDiscord className="text-2xl" />
             Login via Discord
+          </button>
+
+          <button
+            onClick={() =>
+              signIn('google', {
+                callbackUrl: '/',
+              })
+            }
+            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-primary-contrast shadow-primary-light transition-all hover:bg-primary-dark"
+          >
+            <FaGoogle className="text-2xl" />
+            Login via Google
           </button>
           <button
             onClick={() => toast.info('Coming Soon!')}

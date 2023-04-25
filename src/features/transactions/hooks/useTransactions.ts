@@ -1,10 +1,18 @@
 import { getTransactions } from '@/features/transactions';
 import { useQuery } from '@tanstack/react-query';
 
-export const useTransactions = (id?: string) => {
+interface Props {
+  id?: string;
+  options?: {
+    filterColumn?: string;
+    filterValue?: string;
+  };
+}
+
+export const useTransactions = ({ id, options }: Props) => {
   return useQuery({
-    queryKey: ['transactions', id],
-    queryFn: async () => (id ? getTransactions(id) : null),
+    queryKey: ['transactions', id, options?.filterColumn, options?.filterValue],
+    queryFn: async () => (id ? getTransactions({ id, options }) : null),
     enabled: !!id,
   });
 };

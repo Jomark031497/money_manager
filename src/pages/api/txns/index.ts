@@ -8,9 +8,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
   if (req.method === 'POST') {
+    const purchaseDate = new Date(req.body.purchaseDate);
+
     const body = TransactionSchema.shape.body.parse({
       ...req.body,
-      date: new Date(req.body.date),
+      purchaseDate,
     });
 
     const [transaction] = await prisma.$transaction([

@@ -5,7 +5,7 @@ export const updateTransaction = async (
   id: string,
   payload: Partial<ITransactionInputs['body']>,
 ): Promise<Transaction> => {
-  const response = await fetch(`/api/transactions/${id}`, {
+  const response = await fetch(`/api/txns/${id}`, {
     method: 'PUT',
     body: JSON.stringify({ ...payload }),
     headers: {

@@ -1,6 +1,7 @@
 import { type GetServerSidePropsContext } from 'next';
 import { getServerSession, type NextAuthOptions, type DefaultSession } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
+import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/server/db';
 import { StaticImageData } from 'next/image';
@@ -48,6 +49,10 @@ export const authOptions: NextAuthOptions = {
     DiscordProvider({
       clientId: <string>process.env.DISCORD_CLIENT_ID,
       clientSecret: <string>process.env.DISCORD_CLIENT_SECRET,
+    }),
+    GoogleProvider({
+      clientId: <string>process.env.GOOGLE_CLIENT_ID,
+      clientSecret: <string>process.env.GOOGLE_CLIENT_SECRET,
     }),
 
     /**
