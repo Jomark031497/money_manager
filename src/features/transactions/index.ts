@@ -8,6 +8,7 @@ export * from './api/updateTransaction';
 export * from './components/TransactionCard';
 export * from './components/CreateTransaction';
 export * from './components/UpdateTransaction';
+export * from './components/Transactions';
 
 // Hooks
 export * from './hooks/useTransactions';

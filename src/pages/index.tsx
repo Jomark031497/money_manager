@@ -1,12 +1,7 @@
 import { Wallets } from '@/features/wallets';
-import { motion } from 'framer-motion';
 import { GetServerSidePropsContext } from 'next';
-import { AiOutlinePlus } from 'react-icons/ai';
 import Head from 'next/head';
-import { Button } from '@/components/Elements';
-import { useModal } from '@/hooks/useModal';
-import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
-import { Session } from 'next-auth';
+import { Transactions } from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -26,10 +21,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function Home({ user }: { user: Session['user'] }) {
-  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions(user.id);
-  const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
-
+export default function Home() {
   return (
     <>
       <Head>
@@ -42,44 +34,9 @@ export default function Home({ user }: { user: Session['user'] }) {
         </section>
 
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-lg font-semibold text-gray-500">Recent Transactions</p>
-            <Button
-              onClick={() => {
-                // if (!wallets?.count) return toast.error('You have no wallets. Please add a wallet first.');
-                openCreateTransaction();
-              }}
-              className="flex items-center gap-1"
-            >
-              <AiOutlinePlus className="text-2xl" />
-              Create Transaction
-            </Button>
-          </div>
-
-          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 p-4">
-            {isTransactionsLoading ? (
-              <div>Loading...</div>
-            ) : transactions?.data.length ? (
-              transactions?.data.map((transaction, index) => (
-                <motion.div
-                  key={transaction.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <TransactionCard transaction={transaction} />
-                </motion.div>
-              ))
-            ) : (
-              <div className="text-center">
-                <p className="text-md text-gray-500">You have no transaction yet.</p>
-              </div>
-            )}
-          </div>
+          <Transactions />
         </section>
       </div>
-
-      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} />
     </>
   );
 }
