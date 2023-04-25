@@ -7,9 +7,9 @@ export const updateTransaction = async (
 ): Promise<Transaction> => {
   const response = await fetch(`/api/transactions/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload }),
     headers: {
-      'Content-Type': 'application',
+      'Content-Type': 'application/json',
     },
   });
 

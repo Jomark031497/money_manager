@@ -39,15 +39,15 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['wallets'] });
+      reset();
+      close();
+      toast.success('Transaction created successfully.');
     },
   });
 
   const onSubmit: SubmitHandler<ITransactionInputs['body']> = async (values) => {
     try {
       mutation.mutateAsync(values);
-      reset();
-      toast.success('Transaction created successfully.');
-      close();
     } catch (error) {
       toast.error('Transaction creation failed.');
     }
@@ -56,7 +56,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={close} title="Create Transaction" size="max-w-sm">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
-        <InputField label="Name *" {...register('name')} formError={errors.name} className="col-span-3" />
+        <InputField label="Transaction Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
         <InputField
           label="Description"
@@ -65,33 +65,21 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
           className="col-span-2"
         />
 
-        <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-2">
-          {TRANSACTION_TYPES.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </SelectField>
-
-        <InputField
-          label="Amount *"
-          formError={errors.amount}
-          className="col-span-2"
-          {...register('amount', {
-            valueAsNumber: true,
-          })}
-        />
-
-        <InputField
-          label="Date *"
-          type="date"
-          formError={errors.date}
-          className="col-span-2"
-          {...register('date', {
-            valueAsDate: true,
-          })}
-          defaultValue={formatDateWithTimezone(new Date(), 'yyyy-MM-dd')}
-        />
+        <div className="col-span-3 grid grid-cols-2 gap-2">
+          <InputField
+            label="Amount *"
+            formError={errors.amount}
+            className="col-span-1"
+            {...register('amount', { valueAsNumber: true })}
+          />
+          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
+            {TRANSACTION_TYPES.map((type) => (
+              <option key={type} value={type} className="">
+                {type}
+              </option>
+            ))}
+          </SelectField>
+        </div>
 
         <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
           {TRANSACTION_CATEGORIES.map((category) => (
@@ -118,6 +106,17 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
             ))}
           </SelectField>
         )}
+
+        <InputField
+          label="Date *"
+          type="date"
+          formError={errors.date}
+          className="col-span-2"
+          {...register('date', {
+            valueAsDate: true,
+          })}
+          defaultValue={formatDateWithTimezone(new Date(), 'yyyy-MM-dd')}
+        />
 
         <Button
           type="submit"

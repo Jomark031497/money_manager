@@ -29,6 +29,8 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
     mutationFn: (payload: IWalletInputs['body']) => createWallet(payload),
     onSuccess: () => {
       queryClient.invalidateQueries(['wallets']);
+      queryClient.invalidateQueries(['transactions']);
+
       reset();
       close();
       toast.success('Card created successfully.', {

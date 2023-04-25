@@ -11,7 +11,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const body = WalletSchema.shape.body.parse(req.body);
 
     const wallet = await prisma.wallet.create({
-      data: body,
+      data: {
+        ...body,
+      },
+    });
+
+    await prisma.transaction.create({
+      data: {
+        name: 'Initial Balance',
+        category: 'Miscellaneous',
+        type: 'INCOME',
+        amount: body.balance,
+        walletId: wallet.id,
+        description: 'Initial Balance',
+        userId: session.user.id,
+      },
     });
 
     return res.status(200).json(wallet);

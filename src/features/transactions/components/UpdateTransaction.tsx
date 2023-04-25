@@ -12,6 +12,7 @@ import {
   TransactionSchema,
   updateTransaction,
 } from '@/features/transactions';
+import { useMutation } from '@tanstack/react-query';
 
 interface Props {
   isOpen: boolean;
@@ -32,13 +33,19 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     defaultValues: { ...transaction },
   });
 
+  const mutation = useMutation({
+    mutationFn: (values: Partial<ITransactionInputs['body']>) => updateTransaction(transaction.id, values),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['transaction']);
+      reset();
+      close();
+      toast.success('Transaction updated successfully.');
+    },
+  });
+
   const onSubmit: SubmitHandler<Partial<ITransactionInputs['body']>> = async (values) => {
     try {
-      await updateTransaction(transaction.id, values);
-      reset();
-      queryClient.invalidateQueries(['transaction']);
-      toast.success('Transaction updated successfully.');
-      close();
+      mutation.mutate(values);
     } catch (error) {
       toast.error('Transaction update failed.');
     }
@@ -57,33 +64,24 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             className="col-span-3"
           />
 
-          <InputField
-            label="Amount *"
-            {...register('amount', {
-              valueAsNumber: true,
-            })}
-            formError={errors.amount}
-            className="col-span-3"
-          />
+          <div className="col-span-3 grid grid-cols-2 gap-2">
+            <InputField
+              label="Amount *"
+              {...register('amount', {
+                valueAsNumber: true,
+              })}
+              formError={errors.amount}
+              className="col-span-1"
+            />
 
-          <InputField
-            label="Date *"
-            type="date"
-            formError={errors.date}
-            className="col-span-2"
-            {...register('date', {
-              valueAsDate: true,
-            })}
-            defaultValue={Date.now()}
-          />
-
-          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-2">
-            {TRANSACTION_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </SelectField>
+            <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
+              {TRANSACTION_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </SelectField>
+          </div>
 
           <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
             {TRANSACTION_CATEGORIES.map((category) => (
@@ -101,19 +99,23 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             defaultValue={sessionData?.user.id}
           />
 
+          <InputField
+            label="Date *"
+            type="date"
+            formError={errors.date}
+            className="col-span-2"
+            {...register('date', {
+              valueAsDate: true,
+            })}
+            defaultValue={Date.now()}
+          />
+
           <Button
             type="submit"
             disabled={isSubmitting}
             className="col-span-3 flex items-center justify-center gap-2 py-2"
           >
-            {isSubmitting ? (
-              <>
-                Submitting
-                <Spinner />
-              </>
-            ) : (
-              'Create'
-            )}
+            {isSubmitting ? <Spinner /> : 'Create'}
           </Button>
         </form>
       </Modal>
