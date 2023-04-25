@@ -109,9 +109,9 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
         <InputField
           label="Date *"
           type="date"
-          formError={errors.createdAt}
+          formError={errors.purchaseDate}
           className="col-span-2"
-          {...register('createdAt', {
+          {...register('purchaseDate', {
             valueAsDate: true,
           })}
         />
@@ -121,14 +121,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
           disabled={isSubmitting}
           className="col-span-3 flex items-center justify-center gap-2 py-2"
         >
-          {isSubmitting ? (
-            <>
-              Submitting
-              <Spinner />
-            </>
-          ) : (
-            'Create'
-          )}
+          {isSubmitting ? <Spinner /> : 'Create'}
         </Button>
       </form>
     </Modal>

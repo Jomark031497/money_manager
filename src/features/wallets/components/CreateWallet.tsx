@@ -30,7 +30,6 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries(['wallets']);
       queryClient.invalidateQueries(['transactions']);
-
       reset();
       close();
       toast.success('Card created successfully.', {
@@ -41,7 +40,7 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
 
   const onSubmit: SubmitHandler<IWalletInputs['body']> = async (values) => {
     try {
-      mutation.mutate(values);
+      mutation.mutateAsync(values);
     } catch (error) {
       toast.error('Card creation failed.');
     }
@@ -67,12 +66,12 @@ export const CreateWallet = ({ isOpen, close }: Props) => {
             {...register('description')}
           />
 
-          {/* <InputField
+          <InputField
             label="Initial Balance *"
             className="col-span-2"
             formError={errors.balance}
             {...register('balance', { valueAsNumber: true })}
-          /> */}
+          />
 
           <InputField
             label="User ID"

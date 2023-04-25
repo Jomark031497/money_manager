@@ -23,7 +23,7 @@ export const TransactionSchema = z.object({
       .string()
       .min(2, 'Transaction name must contain at least (2) characters long')
       .max(150, 'Transaction name must contain at most 150 character(s)'),
-    createdAt: z.date(),
+    purchaseDate: z.date(),
     description: z.string().nullish(),
     type: z.enum(TRANSACTION_TYPES),
     category: z.enum(TRANSACTION_CATEGORIES),
@@ -39,6 +39,8 @@ export const TransactionSchema = z.object({
     id: z.string().cuid().optional(),
     skip: z.string().optional(),
     take: z.string().optional(),
+    filterValue: z.string().optional(),
+    filterColumn: z.string().optional(),
   }),
 });
 

@@ -16,6 +16,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
+    await prisma.transaction.create({
+      data: {
+        name: 'Initial Balance',
+        description: `${wallet.name} - Initial Balance`,
+        category: 'Miscellaneous',
+        type: 'INCOME',
+        amount: wallet.balance,
+        userId: wallet.userId,
+        walletId: wallet.id,
+      },
+    });
+
     return res.status(200).json(wallet);
   }
 }
