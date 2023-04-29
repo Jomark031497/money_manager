@@ -5,6 +5,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getServerAuthSession } from '@/server/auth';
 import { Button } from '@/components/Elements';
 import { AiFillGold } from 'react-icons/ai';
+import { signIn } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -38,17 +40,21 @@ export default function Login() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Button primary className="flex items-center">
+            <Button primary onClick={() => signIn('discord', { callbackUrl: '/' })} className="flex items-center">
               <FaDiscord className="mr-2 text-2xl" />
               Login via Discord
             </Button>
 
-            <Button primary className="flex items-center">
+            <Button
+              primary
+              onClick={() => toast.info('This feature is not yet implemented')}
+              className="flex items-center"
+            >
               <FaGoogle className="mr-2 text-2xl" />
               Login via Google
             </Button>
 
-            <Button className="flex items-center">
+            <Button onClick={() => toast.info('This feature is not yet implemented')} className="flex items-center">
               <RiTestTubeFill className="mr-2 text-2xl" />
               Try Demo
             </Button>
