@@ -11,11 +11,7 @@ const font = Figtree({
   subsets: ['latin'],
 });
 
-interface Props {
-  children: ReactNode;
-}
-
-export const RootLayout = ({ children }: Props) => {
+export const RootLayout = ({ children }: { children: ReactNode }) => {
   const { pathname } = useRouter();
 
   return (

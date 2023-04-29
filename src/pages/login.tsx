@@ -53,7 +53,7 @@ export default function Login() {
           <div className="flex flex-col gap-2">
             <Button
               onClick={() => signIn('discord', { callbackUrl: '/' })}
-              className="text flex items-center bg-secondary text-white"
+              className="flex items-center bg-secondary text-white transition-all hover:bg-secondary-dark"
             >
               <FaDiscord className="mr-2 text-2xl" />
               Login via Discord
@@ -61,7 +61,7 @@ export default function Login() {
 
             <Button
               onClick={() => toast.info('This feature is not yet implemented')}
-              className="text flex items-center bg-secondary text-white"
+              className="flex items-center bg-secondary text-white transition-all hover:bg-secondary-dark"
             >
               <FaGoogle className="mr-2 text-2xl" />
               Login via Google
@@ -69,10 +69,10 @@ export default function Login() {
 
             <Button
               onClick={() => toast.info('This feature is not yet implemented')}
-              className="text flex items-center bg-secondary text-white"
+              className="flex items-center bg-secondary text-white transition-all hover:bg-secondary-dark"
             >
               <RiTestTubeFill className="mr-2 text-2xl" />
-              Try Demo
+              Try Demo Version
             </Button>
           </div>
         </div>

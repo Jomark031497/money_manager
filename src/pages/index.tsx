@@ -1,19 +1,15 @@
 import { Wallets } from '@/features/wallets';
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import { Transactions } from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
-import { Session } from 'next-auth';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerAuthSession(context);
 
   if (!session) {
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
+      redirect: { destination: '/login', permanent: false },
     };
   }
 
@@ -22,7 +18,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 
-export default function Home({ user }: { user: Session['user'] }) {
+export default function Home({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>

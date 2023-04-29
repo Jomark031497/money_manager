@@ -49,6 +49,8 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
     <>
       <Modal isOpen={isOpen} onClose={close} title="Update Wallet" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
+          <InputField label="Wallet Emoji *" {...register('emoji')} formError={errors.emoji} className="col-span-3" />
+
           <InputField
             label="Wallet Name *"
             placeholder="Acme Debit Card, X Digital Wallet"

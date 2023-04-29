@@ -12,9 +12,10 @@ datasource db {
 
 model Wallet {
   id          String        @id @default(cuid())
-  name        String        @db.VarChar(150)
+  name        String        @db.VarChar(100)
   description String        @db.VarChar(50)
   balance     Float         @default(0)
+  emoji       String?
   user        User          @relation(fields: [userId], references: [id])
   userId      String        @map("user_id")
   createdAt   DateTime      @default(now()) @map("created_at")

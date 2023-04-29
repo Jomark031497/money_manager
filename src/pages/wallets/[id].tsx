@@ -3,8 +3,8 @@ import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransac
 import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeleton, useWallet } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
 import { getServerAuthSession } from '@/server/auth';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Menu } from '@headlessui/react';
-import { motion } from 'framer-motion';
 import { GetServerSidePropsContext } from 'next';
 import { Session } from 'next-auth';
 import Head from 'next/head';
@@ -48,6 +48,7 @@ export default function Wallet({ user }: { user: Session['user'] }) {
       take: pagination.pageSize,
     },
   });
+  const [parent] = useAutoAnimate();
 
   const { open: openUpdate, isOpen: isUpdateOpen, close: closeUpdate } = useModal();
   const { open: openDelete, isOpen: isDeleteOpen, close: closeDelete } = useModal();
@@ -134,7 +135,7 @@ export default function Wallet({ user }: { user: Session['user'] }) {
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2 rounded-xl bg-gray-100 p-2">
+          <div ref={parent} className="flex flex-col gap-2 rounded-xl bg-gray-100 p-2">
             {isTransactionsLoading ? (
               <>
                 <TransactionCardSkeleton />
@@ -144,15 +145,8 @@ export default function Wallet({ user }: { user: Session['user'] }) {
                 <TransactionCardSkeleton />
               </>
             ) : transactions?.data.length ? (
-              transactions?.data.map((transaction, index) => (
-                <motion.div
-                  key={transaction.id}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <TransactionCard transaction={transaction} />
-                </motion.div>
+              transactions?.data.map((transaction) => (
+                <TransactionCard transaction={transaction} key={transaction.id} />
               ))
             ) : (
               <p className="text-md text-center font-semibold text-gray-500">
