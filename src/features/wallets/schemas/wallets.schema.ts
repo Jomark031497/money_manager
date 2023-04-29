@@ -1,7 +1,15 @@
 import { z } from 'zod';
 
+const emojiRegex = /^[\u{1F000}-\u{1F6FF}]$/u;
+
 export const WalletSchema = z.object({
   body: z.object({
+    emoji: z
+      .string()
+      .refine((value) => emojiRegex.test(value), {
+        message: 'Please enter only one emoji character',
+      })
+      .nullish(),
     name: z.string().min(1, "Please enter wallet's name").max(100, 'Wallet name must not exceed 100 characters'),
     description: z
       .string()

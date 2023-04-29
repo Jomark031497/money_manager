@@ -13,7 +13,7 @@ export const TransactionCard = ({ transaction }: Props) => {
     <Link
       href={`/transactions/${transaction.id}`}
       className={classNames(
-        'grid h-[84px]  grid-cols-3 gap-0 rounded-xl p-2 shadow',
+        'grid grid-cols-3 gap-0 rounded-xl p-2 shadow',
         transaction.type === 'EXPENSE' ? 'bg-red-200 text-red-800' : 'bg-green-100 text-green-600',
       )}
     >
@@ -24,7 +24,7 @@ export const TransactionCard = ({ transaction }: Props) => {
       <p className="col-span-2 text-xs">{transaction.wallet.name}</p>
       <p className="col-span-1 justify-self-end text-xs">{format(new Date(transaction.createdAt), 'MMMM dd, yyyy')}</p>
       <p className="col-span-3 text-xs">{transaction.category.replaceAll('_', ' ')}</p>
-      <p className="col-span-3 text-xs italic">{transaction.description}</p>
+      <p className="col-span-3 text-xs italic text-gray-500">{transaction.description}</p>
     </Link>
   );
 };

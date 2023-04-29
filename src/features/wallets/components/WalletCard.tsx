@@ -12,11 +12,16 @@ export const WalletCard = ({ wallet }: Props) => {
     <Link
       key={wallet.id}
       href={`/wallets/${wallet.id}`}
-      className="my-auto grid h-[92px] grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white shadow-xl"
+      className="my-auto grid grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white shadow-xl"
     >
-      <div className="col-span-3 flex flex-col">
-        <p className="truncate text-sm font-bold">{wallet.name}</p>
-        <p className="truncate text-xs font-semibold">{wallet.description}</p>
+      <div className="col-span-3 flex items-center gap-2">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border bg-white text-2xl">
+          {wallet.emoji}
+        </span>
+        <div>
+          <p className="truncate text-sm font-bold">{wallet.name}</p>
+          <p className="truncate text-xs font-semibold">{wallet.description}</p>
+        </div>
       </div>
 
       <button
