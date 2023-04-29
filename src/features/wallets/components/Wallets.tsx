@@ -10,7 +10,7 @@ export const Wallets = ({ userId }: { userId: string }) => {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Wallets</p>
         <Button onClick={() => openCreate()} className="flex items-center gap-1">
           <AiOutlinePlus className="text-xl" />
@@ -24,13 +24,14 @@ export const Wallets = ({ userId }: { userId: string }) => {
             <WalletCardSkeleton />
             <WalletCardSkeleton />
             <WalletCardSkeleton />
+            <WalletCardSkeleton />
           </>
         ) : wallets?.data.length ? (
           wallets?.data.map((wallet, index) => (
             <motion.div
               key={wallet.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <WalletCard wallet={wallet} />

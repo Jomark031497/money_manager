@@ -80,38 +80,3 @@ export default function Login() {
     </>
   );
 }
-
-{
-  /* <div className="w-full rounded p-4">
-  <p className="mb-4 text-center text-4xl font-semibold">momney</p>
-
-  <div className="flex flex-col items-center gap-2 p-4">
-    <Button
-      className="flex min-w-[160px] items-center py-2"
-      primary
-      onClick={() => signIn('discord', { callbackUrl: '/' })}
-    >
-      <FaDiscord className="mr-2 text-2xl" />
-      Login via Discord
-    </Button>
-
-    <Button
-      className="flex min-w-[160px] items-center py-2"
-      primary
-      onClick={() => signIn('discord', { callbackUrl: '/' })}
-    >
-      <FaGoogle className="mr-2 text-2xl" />
-      Login via Google
-    </Button>
-
-    <Button
-      className="flex min-w-[160px] items-center py-2"
-      primary
-      onClick={() => signIn('discord', { callbackUrl: '/' })}
-    >
-      <BiTestTube className="mr-2 text-2xl" />
-      Try Demo
-    </Button>
-  </div>
-</div>; */
-}

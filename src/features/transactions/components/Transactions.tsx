@@ -6,7 +6,11 @@ import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
-export const Transactions = ({ userId }: { userId: string }) => {
+interface Props {
+  userId: string;
+}
+
+export const Transactions = ({ userId }: Props) => {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 5,
@@ -37,13 +41,15 @@ export const Transactions = ({ userId }: { userId: string }) => {
             <TransactionCardSkeleton />
             <TransactionCardSkeleton />
             <TransactionCardSkeleton />
+            <TransactionCardSkeleton />
+            <TransactionCardSkeleton />
           </>
         ) : transactions?.data.length ? (
           transactions?.data.map((transaction, index) => (
             <motion.div
               key={transaction.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <TransactionCard transaction={transaction} />

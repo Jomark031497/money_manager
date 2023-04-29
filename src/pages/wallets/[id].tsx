@@ -9,7 +9,9 @@ import { GetServerSidePropsContext } from 'next';
 import { Session } from 'next-auth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { AiFillDelete, AiFillEdit, AiFillSetting, AiOutlinePlus } from 'react-icons/ai';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerAuthSession(context);
@@ -28,6 +30,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 export default function Wallet({ user }: { user: Session['user'] }) {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   const router = useRouter();
   const id = router.query.id as string;
 
@@ -37,6 +44,8 @@ export default function Wallet({ user }: { user: Session['user'] }) {
     options: {
       filterColumn: 'walletId',
       filterValue: wallet?.id,
+      skip: pagination.pageIndex,
+      take: pagination.pageSize,
     },
   });
 
@@ -131,6 +140,8 @@ export default function Wallet({ user }: { user: Session['user'] }) {
                 <TransactionCardSkeleton />
                 <TransactionCardSkeleton />
                 <TransactionCardSkeleton />
+                <TransactionCardSkeleton />
+                <TransactionCardSkeleton />
               </>
             ) : transactions?.data.length ? (
               transactions?.data.map((transaction, index) => (
@@ -148,6 +159,30 @@ export default function Wallet({ user }: { user: Session['user'] }) {
                 You have no transactions in this wallet.
               </p>
             )}
+
+            <div className="flex justify-end gap-2">
+              <Button
+                aria-label="Previous"
+                disabled={pagination.pageIndex === 0}
+                onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })}
+              >
+                <GrFormPrevious />
+              </Button>
+              <p>
+                {pagination.pageIndex + 1} of{' '}
+                {Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0)}
+              </p>
+              <Button
+                aria-label="Next"
+                disabled={
+                  pagination.pageIndex ===
+                  Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0) - 1
+                }
+                onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })}
+              >
+                <GrFormNext />
+              </Button>
+            </div>
           </div>
 
           <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
