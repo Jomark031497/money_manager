@@ -15,8 +15,8 @@ export const WalletCard = ({ wallet }: Props) => {
       className="my-auto grid h-[92px] grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white shadow-xl"
     >
       <div className="col-span-3 flex flex-col">
-        <p className="text-sm font-bold">{wallet.name}</p>
-        <p className="text-xs font-semibold">{wallet.description}</p>
+        <p className="truncate text-sm font-bold">{wallet.name}</p>
+        <p className="truncate text-xs font-semibold">{wallet.description}</p>
       </div>
 
       <button

@@ -12,7 +12,7 @@ datasource db {
 
 model Wallet {
   id          String        @id @default(cuid())
-  name        String        @db.VarChar(150)
+  name        String        @db.VarChar(100)
   description String        @db.VarChar(50)
   balance     Float         @default(0)
   user        User          @relation(fields: [userId], references: [id])
