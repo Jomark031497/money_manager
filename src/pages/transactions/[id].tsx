@@ -41,7 +41,7 @@ export default function Transaction() {
   return (
     <>
       <Head>
-        <title>{transaction?.name ?? 'Transaction'} | Momney Manager App</title>
+        <title>{transaction?.name} | Momney Manager App</title>
         <link rel="canonical" href={`${process.env.NEXT_PUBLIC_BASE_URL}/transactions/${id}`} key="canonical" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta property="og:title" content="Momney - The Ultimate Money Manager App" />
