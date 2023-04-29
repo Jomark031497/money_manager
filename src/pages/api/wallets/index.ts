@@ -7,7 +7,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const session = await getServerAuthSession({ req, res });
   if (!session) return res.status(401).json({ message: 'Unauthorized' });
 
-
   if (req.method === 'POST') {
     const data = WalletSchema.shape.body.parse(req.body);
 
@@ -20,8 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         name: 'Initial Balance',
         description: `Initial Balance`,
         category: 'Miscellaneous',
-        type: 'INCOME',
-        amount: wallet.balance,
+        type: data.balance < 0 ? 'EXPENSE' : 'INCOME',
+        amount: Math.abs(wallet.balance),
         userId: wallet.userId,
         walletId: wallet.id,
       },

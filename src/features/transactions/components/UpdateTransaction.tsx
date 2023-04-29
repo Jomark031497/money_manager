@@ -13,6 +13,7 @@ import {
   updateTransaction,
 } from '@/features/transactions';
 import { useMutation } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 interface Props {
   isOpen: boolean;
@@ -23,6 +24,8 @@ interface Props {
 export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
   const { data: sessionData } = useSession();
 
+  const { purchaseDate, ...rest } = transaction;
+
   const {
     register,
     handleSubmit,
@@ -30,7 +33,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     formState: { isSubmitting, errors },
   } = useForm<Partial<ITransactionInputs['body']>>({
     resolver: zodResolver(TransactionSchema.shape.body.partial()),
-    defaultValues: { ...transaction },
+    defaultValues: { ...rest },
   });
 
   const mutation = useMutation({
@@ -53,7 +56,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} title="Update Transaction" size="max-w-sm">
+      <Modal isOpen={isOpen} onClose={close} title="Update Transaction">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
           <InputField label="Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
@@ -104,6 +107,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             type="date"
             formError={errors.purchaseDate}
             className="col-span-2"
+            defaultValue={format(new Date(purchaseDate), 'yyyy-MM-dd')}
             {...register('purchaseDate', {
               valueAsDate: true,
             })}

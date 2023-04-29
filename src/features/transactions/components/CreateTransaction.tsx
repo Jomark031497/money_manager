@@ -13,6 +13,7 @@ import {
 } from '@/features/transactions';
 import { useWallets } from '@/features/wallets';
 import { useMutation } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 interface Props {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close} title="Create Transaction" size="max-w-sm">
+    <Modal isOpen={isOpen} onClose={close} title="Create Transaction">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
         <InputField label="Transaction Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
@@ -81,22 +82,6 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
           </SelectField>
         </div>
 
-        <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
-          {TRANSACTION_CATEGORIES.map((category) => (
-            <option key={category} value={category}>
-              {category.replaceAll('_', ' ')}
-            </option>
-          ))}
-        </SelectField>
-
-        <InputField
-          label="User ID"
-          className="hidden"
-          {...register('userId')}
-          formError={errors.userId}
-          defaultValue={sessionData?.user.id}
-        />
-
         {wallets?.data && (
           <SelectField label="Wallet" {...register('walletId')} formError={errors.type} className="col-span-3">
             {wallets.data.map((wallet) => (
@@ -107,16 +92,34 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
           </SelectField>
         )}
 
-        <InputField
-          label="Date *"
-          type="date"
-          formError={errors.purchaseDate}
-          className="col-span-2"
-          {...register('purchaseDate', {
-            valueAsDate: true,
-          })}
-        />
+        <div className="col-span-3 grid grid-cols-2 gap-2">
+          <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-1">
+            {TRANSACTION_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category.replaceAll('_', ' ')}
+              </option>
+            ))}
+          </SelectField>
 
+          <InputField
+            label="User ID"
+            className="hidden"
+            {...register('userId')}
+            formError={errors.userId}
+            defaultValue={sessionData?.user.id}
+          />
+
+          <InputField
+            label="Date *"
+            type="date"
+            formError={errors.purchaseDate}
+            defaultValue={format(new Date(), 'yyyy-MM-dd')}
+            className="col-span-1 appearance-none"
+            {...register('purchaseDate', {
+              valueAsDate: true,
+            })}
+          />
+        </div>
         <Button
           type="submit"
           disabled={isSubmitting}
