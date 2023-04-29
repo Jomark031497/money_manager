@@ -47,7 +47,7 @@ export const UpdateWallet = ({ isOpen, close, wallet }: Props) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} title="Update Wallet" size="max-w-sm">
+      <Modal isOpen={isOpen} onClose={close} title="Update Wallet">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
           <InputField label="Wallet Emoji *" {...register('emoji')} formError={errors.emoji} className="col-span-3" />
 

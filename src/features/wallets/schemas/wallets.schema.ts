@@ -8,9 +8,7 @@ export const WalletSchema = z.object({
       .string()
       .min(1, 'Please enter a short description')
       .max(50, 'Description must not exceed 50 characters long'),
-    balance: z
-      .number({ invalid_type_error: 'Please enter a valid amount' })
-      .nonnegative('Number not be a negative amount'),
+    balance: z.number({ invalid_type_error: 'Please enter a valid amount' }),
     userId: z.string(),
   }),
   query: z.object({

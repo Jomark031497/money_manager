@@ -7,10 +7,9 @@ interface Props {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  size?: 'max-w-sm' | 'max-w-md' | 'max-w-lg';
 }
 
-export const Modal = ({ children, title, isOpen, onClose, size = 'max-w-md' }: Props) => {
+export const Modal = ({ children, title, isOpen, onClose }: Props) => {
   const initialFocusRef = useRef(null);
 
   return (
@@ -38,7 +37,7 @@ export const Modal = ({ children, title, isOpen, onClose, size = 'max-w-md' }: P
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className={`w-full rounded bg-white ${size}`}>
+            <Dialog.Panel className={`w-full max-w-xs rounded bg-white md:max-w-sm`}>
               <div ref={initialFocusRef} className="relative rounded bg-gray-200 p-4">
                 <Dialog.Title className="text-md font-semibold text-gray-500">{title}</Dialog.Title>
 

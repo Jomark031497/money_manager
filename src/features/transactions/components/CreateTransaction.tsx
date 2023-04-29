@@ -54,7 +54,7 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close} title="Create Transaction" size="max-w-sm">
+    <Modal isOpen={isOpen} onClose={close} title="Create Transaction">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
         <InputField label="Transaction Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 

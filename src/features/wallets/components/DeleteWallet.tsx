@@ -42,7 +42,7 @@ export const DeleteWallet = ({ isOpen, close, wallet }: Props) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} title="Delete Wallet" size="max-w-sm">
+      <Modal isOpen={isOpen} onClose={close} title="Delete Wallet">
         <div className="grid grid-cols-3 gap-2 p-4">
           <p className="col-span-3 font-semibold italic">Are you sure you want to delete:</p>
 
