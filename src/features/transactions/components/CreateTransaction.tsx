@@ -17,11 +17,12 @@ import { useMutation } from '@tanstack/react-query';
 interface Props {
   isOpen: boolean;
   close: () => void;
+  userId: string;
 }
 
-export const CreateTransaction = ({ isOpen, close }: Props) => {
+export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
   const { data: sessionData } = useSession();
-  const { data: wallets } = useWallets(sessionData?.user.id);
+  const { data: wallets } = useWallets(userId);
 
   const {
     register,

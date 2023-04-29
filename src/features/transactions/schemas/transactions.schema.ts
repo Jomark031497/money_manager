@@ -32,11 +32,11 @@ export const TransactionSchema = z.object({
         invalid_type_error: 'Please enter a valid amount',
       })
       .nonnegative(),
-    walletId: z.string().cuid(),
-    userId: z.string().cuid(),
+    walletId: z.string(),
+    userId: z.string(),
   }),
   query: z.object({
-    id: z.string().cuid().optional(),
+    id: z.string().optional(),
     skip: z.string().optional(),
     take: z.string().optional(),
     filterValue: z.string().optional(),

@@ -6,7 +6,7 @@ import { getServerAuthSession } from '@/server/auth';
 import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
 import { GetServerSidePropsContext } from 'next';
-import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AiFillDelete, AiFillEdit, AiFillSetting, AiOutlinePlus } from 'react-icons/ai';
@@ -27,15 +27,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: { user: session.user },
   };
 }
-export default function Wallet() {
-  const { data: sessionData } = useSession();
-
+export default function Wallet({ user }: { user: Session['user'] }) {
   const router = useRouter();
   const id = router.query.id as string;
 
   const { data: wallet, isLoading, isError } = useWallet(id);
   const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({
-    id: sessionData?.user.id,
+    id: user.id,
     options: {
       filterColumn: 'walletId',
       filterValue: wallet?.id,
@@ -51,7 +49,18 @@ export default function Wallet() {
   return (
     <>
       <Head>
-        <title>Wallet | Momney</title>
+        <title>{wallet?.name ?? 'Wallet'} | Momney Manager App</title>
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_BASE_URL}/wallets/${id}`} key="canonical" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="Momney - The Ultimate Money Manager App" />
+        <meta
+          name="description"
+          content="Momney is a powerful money manager app that allows you to easily track your expenses, savings, and transactions. With Momney, you can manage your finances, set budgets, and achieve your financial goals with ease. Try Momney today and simplify your financial life."
+        />
+        <meta
+          property="og:description"
+          content="Momney is a powerful money manager app that allows you to easily track your expenses, savings, and transactions. With Momney, you can manage your finances, set budgets, and achieve your financial goals with ease. Try Momney today and simplify your financial life."
+        />
       </Head>
 
       <div className="mx-auto max-w-xl p-4">
@@ -141,7 +150,7 @@ export default function Wallet() {
             )}
           </div>
 
-          <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} />
+          <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
         </section>
       </div>
     </>

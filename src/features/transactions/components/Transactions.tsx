@@ -2,13 +2,23 @@ import { Button } from '@/components/Elements';
 import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransactions } from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
 import { motion } from 'framer-motion';
-import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
-export const Transactions = () => {
-  const { data: sessionData } = useSession();
+export const Transactions = ({ userId }: { userId: string }) => {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
 
-  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({ id: sessionData?.user.id });
+  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({
+    id: userId,
+    options: {
+      skip: pagination.pageIndex,
+      take: pagination.pageSize,
+    },
+  });
   const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
 
   return (
@@ -42,9 +52,32 @@ export const Transactions = () => {
         ) : (
           <p className="text-md text-center font-semibold text-gray-500">You have no transactions yet.</p>
         )}
+
+        <div className="flex justify-end gap-2">
+          <Button
+            aria-label="Previous"
+            disabled={pagination.pageIndex === 0}
+            onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })}
+          >
+            <GrFormPrevious />
+          </Button>
+          <p>
+            {pagination.pageIndex + 1} of{' '}
+            {Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0)}
+          </p>
+          <Button
+            aria-label="Next"
+            disabled={
+              pagination.pageIndex === Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0) - 1
+            }
+            onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })}
+          >
+            <GrFormNext />
+          </Button>
+        </div>
       </div>
 
-      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} />
+      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={userId} />
     </>
   );
 };

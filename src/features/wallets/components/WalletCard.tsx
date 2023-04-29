@@ -19,7 +19,10 @@ export const WalletCard = ({ wallet }: Props) => {
         <p className="text-xs font-semibold">{wallet.description}</p>
       </div>
 
-      <button className="col-span-1 self-start justify-self-end rounded-full bg-black/50  text-lg transition-all hover:bg-black/30">
+      <button
+        aria-label={`Go to wallet ${wallet.name}`}
+        className="col-span-1 self-start justify-self-end rounded-full bg-black/50  text-lg transition-all hover:bg-black/30"
+      >
         <HiChevronRight />
       </button>
 

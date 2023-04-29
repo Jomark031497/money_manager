@@ -2,13 +2,10 @@ import { Button } from '@/components/Elements';
 import { CreateWallet, WalletCard, WalletCardSkeleton, useWallets } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
 import { motion } from 'framer-motion';
-import { useSession } from 'next-auth/react';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-export const Wallets = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: wallets, isLoading: isWalletsLoading } = useWallets(sessionData?.user.id);
+export const Wallets = ({ userId }: { userId: string }) => {
+  const { data: wallets, isLoading: isWalletsLoading } = useWallets(userId);
   const { open: openCreate, isOpen: isCreateOpen, close: closeCreate } = useModal();
 
   return (

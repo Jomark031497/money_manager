@@ -10,8 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const query = TransactionSchema.shape.query.parse(req.query);
 
-  // const skip = parseInt(query.skip ?? '0');
-  // const take = parseInt(query.take ?? '5');
+  const skip = parseInt(query.skip ?? '0');
+  const take = parseInt(query.take ?? '5');
   const filterValue = query.filterValue;
   const filterColumn = query.filterColumn as string;
 
@@ -23,6 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         userId: query.id,
         [filterColumn]: filterValue,
       },
+      skip: skip * take,
+      take,
     };
 
     const [data, count] = await prisma.$transaction([

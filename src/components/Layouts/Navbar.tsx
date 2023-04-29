@@ -24,6 +24,7 @@ export const Navbar = () => {
               alt="User Profile Image"
               height={50}
               width={50}
+              priority
               className="rounded-full hover:opacity-50"
             />
           </Menu.Button>

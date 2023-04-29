@@ -41,7 +41,18 @@ export default function Transaction() {
   return (
     <>
       <Head>
-        <title>Transaction | Momney</title>
+        <title>{transaction?.name ?? 'Transaction'} | Momney Manager App</title>
+        <link rel="canonical" href={`${process.env.NEXT_PUBLIC_BASE_URL}/transactions/${id}`} key="canonical" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="Momney - The Ultimate Money Manager App" />
+        <meta
+          name="description"
+          content="Momney is a powerful money manager app that allows you to easily track your expenses, savings, and transactions. With Momney, you can manage your finances, set budgets, and achieve your financial goals with ease. Try Momney today and simplify your financial life."
+        />
+        <meta
+          property="og:description"
+          content="Momney is a powerful money manager app that allows you to easily track your expenses, savings, and transactions. With Momney, you can manage your finances, set budgets, and achieve your financial goals with ease. Try Momney today and simplify your financial life."
+        />
       </Head>
 
       <>

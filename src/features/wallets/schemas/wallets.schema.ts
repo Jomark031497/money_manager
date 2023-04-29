@@ -5,10 +5,10 @@ export const WalletSchema = z.object({
     name: z.string().min(3).max(150),
     description: z.string().max(50),
     balance: z.number().nonnegative(),
-    userId: z.string().cuid(),
+    userId: z.string(),
   }),
   query: z.object({
-    id: z.string().cuid().optional(),
+    id: z.string().optional(),
     skip: z.string().optional(),
     take: z.string().optional(),
   }),
