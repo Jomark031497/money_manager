@@ -4,6 +4,7 @@ export * from './api/createTransaction';
 export * from './api/getTransaction';
 export * from './api/updateTransaction';
 export * from './api/deleteTransaction';
+export * from './api/getCategories';
 
 // Components
 export * from './components/TransactionCard';
@@ -16,6 +17,7 @@ export * from './components/DeleteTransaction';
 // Hooks
 export * from './hooks/useTransactions';
 export * from './hooks/useTransaction';
+export * from './hooks/useCategories';
 
 // Schemas
 export * from './schemas/transactions.schema';

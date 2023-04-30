@@ -1,4 +1,3 @@
-import { Button } from '@/components/Elements/Button';
 import { Dispatch, SetStateAction } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
@@ -14,30 +13,34 @@ export const Pagination = <T extends Record<string, number>>({ pagination, count
   const isNextDisabled = pagination.pageIndex === totalPages - 1;
 
   return (
-    <div className="flex justify-end gap-2">
-      <Button
+    <div className="flex items-center justify-end gap-2">
+      <button
         aria-label="Previous"
         disabled={isPrevDisabled}
         onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })}
         className={`${
-          isPrevDisabled && 'border-gray-400 text-gray-400 hover:border-gray-400 hover:bg-white hover:text-gray-400'
+          isPrevDisabled
+            ? 'text-gray-400'
+            : 'rounded-full border border-transparent p-1 text-secondary transition-all hover:border-secondary'
         }`}
       >
         <BsChevronLeft className="text-lg" />
-      </Button>
-      <p>
+      </button>
+      <p className="text-gray-500">
         Page {pagination.pageIndex + 1} of {totalPages}
       </p>
-      <Button
+      <button
         aria-label="Next"
         disabled={isNextDisabled}
         onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })}
         className={`${
-          isNextDisabled && 'border-gray-400 text-gray-400 hover:border-gray-400 hover:bg-white hover:text-gray-400'
+          isNextDisabled
+            ? 'text-gray-400'
+            : 'rounded-full border border-transparent p-1 text-secondary transition-all hover:border-secondary'
         }`}
       >
         <BsChevronRight className="text-lg" />
-      </Button>
+      </button>
     </div>
   );
 };

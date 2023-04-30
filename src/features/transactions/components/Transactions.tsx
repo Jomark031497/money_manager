@@ -51,12 +51,14 @@ export const Transactions = ({ userId }: Props) => {
           <p className="text-md text-center font-semibold text-gray-500">You have no transactions yet.</p>
         )}
 
-        {transactions?.count && (
+        {transactions?.count ? (
           <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
-        )}
+        ) : null}
       </div>
 
-      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={userId} />
+      {isCreateTransactionOpen && (
+        <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={userId} />
+      )}
     </>
   );
 };

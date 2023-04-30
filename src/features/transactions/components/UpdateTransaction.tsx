@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queryClient } from '@/lib/client';
 import { toast } from 'react-toastify';
@@ -7,13 +7,15 @@ import { useSession } from 'next-auth/react';
 import {
   ITransactionInputs,
   ITransactionWithWallet,
-  TRANSACTION_CATEGORIES,
   TRANSACTION_TYPES,
   TransactionSchema,
   updateTransaction,
+  useCategories,
 } from '@/features/transactions';
 import { useMutation } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { classNames } from '@/utils/classNames';
+import ReactDatePicker from 'react-datepicker';
+import { AiOutlineCalendar } from 'react-icons/ai';
 
 interface Props {
   isOpen: boolean;
@@ -30,10 +32,21 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     register,
     handleSubmit,
     reset,
+    watch,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<Partial<ITransactionInputs['body']>>({
     resolver: zodResolver(TransactionSchema.shape.body.partial()),
     defaultValues: { ...rest },
+  });
+
+  const typeValue = watch('type');
+
+  const { data: categories } = useCategories({
+    options: {
+      filterColumn: 'type',
+      filterValue: typeValue,
+    },
   });
 
   const mutation = useMutation({
@@ -58,6 +71,29 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     <>
       <Modal isOpen={isOpen} onClose={close} title="Update Transaction">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
+          <div className="col-span-3 grid grid-cols-2 gap-2">
+            <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
+              {TRANSACTION_TYPES.map((type) => (
+                <option key={type} value={type} className="">
+                  {type}
+                </option>
+              ))}
+            </SelectField>
+
+            <SelectField
+              label="Category"
+              {...register('categoryId')}
+              formError={errors.categoryId}
+              className="col-span-1"
+            >
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.emoji} {category.name}
+                </option>
+              ))}
+            </SelectField>
+          </div>
+
           <InputField label="Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
           <InputField
@@ -76,23 +112,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
               formError={errors.amount}
               className="col-span-1"
             />
-
-            <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
-              {TRANSACTION_TYPES.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </SelectField>
           </div>
-
-          <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-3">
-            {TRANSACTION_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category.replaceAll('_', ' ')}
-              </option>
-            ))}
-          </SelectField>
 
           <InputField
             label="User ID"
@@ -102,16 +122,26 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
             defaultValue={sessionData?.user.id}
           />
 
-          <InputField
-            label="Date *"
-            type="date"
-            formError={errors.purchaseDate}
-            className="col-span-2"
-            defaultValue={format(new Date(purchaseDate), 'yyyy-MM-dd')}
-            {...register('purchaseDate', {
-              valueAsDate: true,
-            })}
-          />
+          <label className="col-span-2 mb-4 block text-sm font-semibold text-gray-500">
+            Purchase Date
+            <Controller
+              control={control}
+              name="purchaseDate"
+              defaultValue={new Date(purchaseDate)}
+              render={({ field: { onChange, value } }) => (
+                <div className="relative">
+                  <ReactDatePicker
+                    onChange={onChange}
+                    selected={value}
+                    className={classNames(
+                      'mt-1 w-full appearance-none rounded border-2 p-2 px-3 font-sans leading-tight text-gray-500 shadow outline-none transition-all hover:border-primary focus:border-primary',
+                    )}
+                  />
+                  <AiOutlineCalendar className="absolute inset-y-3 right-2 cursor-pointer text-xl" />
+                </div>
+              )}
+            />
+          </label>
 
           <Button
             type="submit"
