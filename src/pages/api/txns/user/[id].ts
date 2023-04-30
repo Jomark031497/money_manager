@@ -17,8 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const findManyQuery: Prisma.TransactionFindManyArgs = {
-      include: { wallet: true },
-      orderBy: { createdAt: 'desc' },
+      include: { wallet: true, category: true },
+      orderBy: { purchaseDate: 'desc' },
       where: {
         userId: query.id,
         [filterColumn]: filterValue,

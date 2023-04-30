@@ -137,7 +137,7 @@ export default function Transaction() {
                   </div>
                   <div className="grid grid-cols-4 gap-16 p-2">
                     <p className="col-span-1 text-sm text-gray-500">Category</p>
-                    <p className="col-span-3 text-sm">{transaction.category.replaceAll('_', ' ')}</p>
+                    {transaction.category.emoji} {transaction.category.name}
                   </div>
                 </div>
               </div>

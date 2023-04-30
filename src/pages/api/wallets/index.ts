@@ -18,8 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         name: 'Initial Balance',
         description: `Initial Balance`,
-        category: 'Miscellaneous',
         type: data.balance < 0 ? 'EXPENSE' : 'INCOME',
+        categoryId: data.balance < 0 ? 'clh2totnq0000ijdfvt4bzu06' : 'clh2totnq0002ijdfy4zekzjc',
         amount: Math.abs(wallet.balance),
         userId: wallet.userId,
         walletId: wallet.id,

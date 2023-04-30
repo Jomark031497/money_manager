@@ -32,13 +32,22 @@ model Transaction {
   amount       Float               @default(0)
   type         TransactionType
   purchaseDate DateTime            @default(now()) @map("purchase_date")
-  category     TransactionCategory
+  category     TransactionCategory @relation(fields: [categoryId], references: [id])
   wallet       Wallet              @relation(fields: [walletId], references: [id], onDelete: Cascade)
   walletId     String              @map("wallet_id")
   user         User                @relation(fields: [userId], references: [id])
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
   updatedAt    DateTime            @updatedAt @map("updated_at")
+  categoryId   String              @map("category_id")
+}
+
+model TransactionCategory {
+  id          String          @id @default(cuid())
+  emoji       String          @db.VarChar(20)
+  name        String          @db.VarChar(100)
+  type        TransactionType
+  Transaction Transaction[]
 }
 
 enum TransactionType {
@@ -47,18 +56,15 @@ enum TransactionType {
   TRANSFER
 }
 
-enum TransactionCategory {
-  Food_And_Beverage
-  Housing
-  Savings
-  Transportation
-  Utilities
-  Personal_Care
-  Entertainment
-  Travel
-  Health
-  Gifts_And_Donation
-  Miscellaneous
+enum TransactionIncomeCategory {
+  Salary
+  Business_Income
+  Rental_Income
+  Investment_Income
+  Gifts
+  Reimbursements
+  Refunds
+  Other
 }
 
 // Next Auth

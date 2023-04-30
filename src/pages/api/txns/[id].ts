@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const transaction = await prisma.transaction.findUnique({
     where: { id: query.id },
-    include: { wallet: true },
+    include: { wallet: true, category: true },
   });
 
   if (req.method === 'GET') {
@@ -19,8 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (req.method === 'PUT') {
     if (!transaction) return res.status(404).json({ message: 'Transaction not found' });
 
-    const date = new Date(req.body.date);
-    const body = TransactionSchema.shape.body.partial().parse({ ...req.body, date });
+    const purchaseDate = new Date(req.body.purchaseDate);
+
+    const body = TransactionSchema.shape.body.partial().parse({ ...req.body, purchaseDate });
     const wallet = transaction.wallet;
 
     const currentWalletBalance = wallet.balance;

@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queryClient } from '@/lib/client';
 import { toast } from 'react-toastify';
@@ -7,13 +7,16 @@ import { useSession } from 'next-auth/react';
 import {
   TransactionSchema,
   ITransactionInputs,
-  TRANSACTION_CATEGORIES,
   TRANSACTION_TYPES,
   createTransaction,
+  useCategories,
 } from '@/features/transactions';
 import { useWallets } from '@/features/wallets';
 import { useMutation } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { classNames } from '@/utils/classNames';
+import { AiOutlineCalendar } from 'react-icons/ai';
 
 interface Props {
   isOpen: boolean;
@@ -29,10 +32,21 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
     register,
     handleSubmit,
     reset,
+    watch,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<ITransactionInputs['body']>({
     resolver: zodResolver(TransactionSchema.shape.body),
     defaultValues: { amount: 0 },
+  });
+
+  const typeValue = watch('type');
+
+  const { data: categories } = useCategories({
+    options: {
+      filterColumn: 'type',
+      filterValue: typeValue,
+    },
   });
 
   const mutation = useMutation({
@@ -57,6 +71,29 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={close} title="Create Transaction">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
+        <div className="col-span-3 grid grid-cols-2 gap-2">
+          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
+            {TRANSACTION_TYPES.map((type) => (
+              <option key={type} value={type} className="">
+                {type}
+              </option>
+            ))}
+          </SelectField>
+
+          <SelectField
+            label="Category"
+            {...register('categoryId')}
+            formError={errors.categoryId}
+            className="col-span-1"
+          >
+            {categories?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.emoji} {category.name}
+              </option>
+            ))}
+          </SelectField>
+        </div>
+
         <InputField label="Transaction Name *" {...register('name')} formError={errors.name} className="col-span-3" />
 
         <InputField
@@ -66,60 +103,53 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
           className="col-span-2"
         />
 
-        <div className="col-span-3 grid grid-cols-2 gap-2">
+        <div className="col-span-2">
           <InputField
             label="Amount *"
             formError={errors.amount}
             className="col-span-1"
             {...register('amount', { valueAsNumber: true })}
           />
-          <SelectField label="Type" {...register('type')} formError={errors.type} className="col-span-1">
-            {TRANSACTION_TYPES.map((type) => (
-              <option key={type} value={type} className="">
-                {type}
-              </option>
-            ))}
-          </SelectField>
         </div>
 
         {wallets?.data && (
           <SelectField label="Wallet" {...register('walletId')} formError={errors.type} className="col-span-3">
             {wallets.data.map((wallet) => (
               <option key={wallet.id} value={wallet.id}>
-                {wallet.name}
+                {wallet.emoji} {wallet.name}
               </option>
             ))}
           </SelectField>
         )}
 
-        <div className="col-span-3 grid grid-cols-2 gap-2">
-          <SelectField label="Category" {...register('category')} formError={errors.category} className="col-span-1">
-            {TRANSACTION_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category.replaceAll('_', ' ')}
-              </option>
-            ))}
-          </SelectField>
-
-          <InputField
-            label="User ID"
-            className="hidden"
-            {...register('userId')}
-            formError={errors.userId}
-            defaultValue={sessionData?.user.id}
+        <label className="col-span-2 mb-4 block text-sm font-semibold text-gray-500">
+          Purchase Date
+          <Controller
+            control={control}
+            name="purchaseDate"
+            defaultValue={new Date()}
+            render={({ field: { onChange, value } }) => (
+              <div className="relative">
+                <ReactDatePicker
+                  onChange={onChange}
+                  selected={value}
+                  className={classNames(
+                    'mt-1 w-full appearance-none rounded border-2 p-2 px-3 font-sans leading-tight text-gray-500 shadow outline-none transition-all hover:border-primary focus:border-primary',
+                  )}
+                />
+                <AiOutlineCalendar className="absolute inset-y-3 right-2 cursor-pointer text-xl" />
+              </div>
+            )}
           />
+        </label>
 
-          <InputField
-            label="Date *"
-            type="date"
-            formError={errors.purchaseDate}
-            defaultValue={format(new Date(), 'yyyy-MM-dd')}
-            className="col-span-1 appearance-none"
-            {...register('purchaseDate', {
-              valueAsDate: true,
-            })}
-          />
-        </div>
+        <InputField
+          label="User ID"
+          className="hidden"
+          {...register('userId')}
+          formError={errors.userId}
+          defaultValue={sessionData?.user.id}
+        />
         <Button
           type="submit"
           disabled={isSubmitting}
