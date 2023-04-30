@@ -25,7 +25,9 @@ export const TransactionCard = ({ transaction }: Props) => {
         <span>{transaction.wallet.emoji}</span>
         <p>{transaction.wallet.name}</p>
       </div>
-      <p className="col-span-1 justify-self-end text-xs">{format(new Date(transaction.createdAt), 'MMMM dd, yyyy')}</p>
+      <p className="col-span-1 justify-self-end text-xs">
+        {format(new Date(transaction.purchaseDate), 'MMMM dd, yyyy')}
+      </p>
       <p className="col-span-3 text-xs">{transaction.category.replaceAll('_', ' ')}</p>
       <p className="col-span-3 text-xs italic text-gray-500">{transaction.description}</p>
     </Link>

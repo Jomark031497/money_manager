@@ -1,7 +1,8 @@
-import { Button, DropdownMenu } from '@/components/Elements';
+import { Button, DropdownMenu, Pagination } from '@/components/Elements';
 import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransactions } from '@/features/transactions';
 import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeleton, useWallet } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
+import { usePagination } from '@/hooks/usePagination';
 import { getServerAuthSession } from '@/server/auth';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Menu } from '@headlessui/react';
@@ -9,9 +10,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Session } from 'next-auth';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { AiFillDelete, AiFillEdit, AiFillSetting, AiOutlinePlus } from 'react-icons/ai';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerAuthSession(context);
@@ -30,7 +29,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   };
 }
 export default function Wallet({ user }: { user: Session['user'] }) {
-  const [pagination, setPagination] = useState({
+  const { pagination, setPagination } = usePagination({
     pageIndex: 0,
     pageSize: 5,
   });
@@ -145,39 +144,16 @@ export default function Wallet({ user }: { user: Session['user'] }) {
                 <TransactionCardSkeleton />
               </>
             ) : transactions?.data.length ? (
-              transactions?.data.map((transaction) => (
-                <TransactionCard transaction={transaction} key={transaction.id} />
-              ))
+              transactions.data.map((transaction) => <TransactionCard transaction={transaction} key={transaction.id} />)
             ) : (
               <p className="text-md text-center font-semibold text-gray-500">
                 You have no transactions in this wallet.
               </p>
             )}
-
-            <div className="flex justify-end gap-2">
-              <Button
-                aria-label="Previous"
-                disabled={pagination.pageIndex === 0}
-                onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })}
-              >
-                <GrFormPrevious />
-              </Button>
-              <p>
-                {pagination.pageIndex + 1} of{' '}
-                {Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0)}
-              </p>
-              <Button
-                aria-label="Next"
-                disabled={
-                  pagination.pageIndex ===
-                  Math.ceil(transactions?.count ? transactions.count / pagination.pageSize : 0) - 1
-                }
-                onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })}
-              >
-                <GrFormNext />
-              </Button>
-            </div>
           </div>
+          {transactions?.count && (
+            <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
+          )}
 
           <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
         </section>

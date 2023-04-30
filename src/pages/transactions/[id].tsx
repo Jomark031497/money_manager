@@ -107,7 +107,7 @@ export default function Transaction() {
                 <div className="rounded-t-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white">
                   <p className="mb-1 text-xs font-semibold">Transaction Date</p>
                   <p className="text-sm font-semibold">
-                    {format(new Date(transaction.createdAt), 'MMMM dd, yyyy hh:mm aa')}
+                    {format(new Date(transaction.purchaseDate), 'MMMM dd, yyyy hh:mm aa')}
                   </p>
                 </div>
 
