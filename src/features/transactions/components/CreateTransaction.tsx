@@ -54,6 +54,8 @@ export const CreateTransaction = ({ isOpen, close, userId }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['walletsSummary'] });
+
       reset();
       close();
       toast.success('Transaction created successfully.');

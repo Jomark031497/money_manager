@@ -53,6 +53,8 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     mutationFn: (values: Partial<ITransactionInputs['body']>) => updateTransaction(transaction.id, values),
     onSuccess: () => {
       queryClient.invalidateQueries(['transaction']);
+      queryClient.invalidateQueries({ queryKey: ['walletsSummary'] });
+      queryClient.invalidateQueries({ queryKey: ['wallets'] });
       reset();
       close();
       toast.success('Transaction updated successfully.');
