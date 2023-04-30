@@ -26,7 +26,7 @@ export const TransactionCard = ({ transaction }: Props) => {
         <p>{transaction.wallet.name}</p>
       </div>
       <p className="col-span-2 justify-self-end text-xs">
-        {format(new Date(transaction.purchaseDate), 'MMMM dd, yyyy hh:mm:ss aa')}
+        {format(new Date(transaction.purchaseDate), 'MMMM dd, yyyy')}
       </p>
       <p className="col-span-2 truncate text-xs italic text-gray-500">{transaction.description}</p>
       <p className="col-span-2 justify-self-end text-xs">

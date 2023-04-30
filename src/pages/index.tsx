@@ -1,4 +1,4 @@
-import { Wallets } from '@/features/wallets';
+import { WalletSummary, Wallets } from '@/features/wallets';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import { Transactions } from '@/features/transactions';
@@ -39,6 +39,10 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
       <div className="mx-auto flex max-w-xl flex-col gap-8 p-4">
         <section>
           <Wallets userId={user.id} />
+        </section>
+
+        <section>
+          <WalletSummary userId={user.id} />
         </section>
 
         <section>
