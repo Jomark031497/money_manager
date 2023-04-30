@@ -1,17 +1,17 @@
-import { Button } from '@/components/Elements';
+import { Button, Pagination } from '@/components/Elements';
 import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransactions } from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
+import { usePagination } from '@/hooks/usePagination';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { useState } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
+
+import { RiExchangeBoxFill } from 'react-icons/ri';
 
 interface Props {
   userId: string;
 }
 
 export const Transactions = ({ userId }: Props) => {
-  const [pagination, setPagination] = useState({
+  const { pagination, setPagination } = usePagination({
     pageIndex: 0,
     pageSize: 5,
   });
@@ -31,7 +31,7 @@ export const Transactions = ({ userId }: Props) => {
       <div className="mb-4 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Recent Transactions</p>
         <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
-          <AiOutlinePlus className="text-xl" />
+          <RiExchangeBoxFill className="text-xl" />
           Create Transaction
         </Button>
       </div>
@@ -46,32 +46,14 @@ export const Transactions = ({ userId }: Props) => {
             <TransactionCardSkeleton />
           </>
         ) : transactions?.data.length ? (
-          transactions?.data.map((transaction) => <TransactionCard transaction={transaction} key={transaction.id} />)
+          transactions.data.map((transaction) => <TransactionCard transaction={transaction} key={transaction.id} />)
         ) : (
           <p className="text-md text-center font-semibold text-gray-500">You have no transactions yet.</p>
         )}
 
-        {transactions?.count ? (
-          <div className="flex justify-end gap-2">
-            <Button
-              aria-label="Previous"
-              disabled={pagination.pageIndex === 0}
-              onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })}
-            >
-              <GrFormPrevious />
-            </Button>
-            <p>
-              Page {pagination.pageIndex + 1} of {Math.ceil(transactions.count / pagination.pageSize)}
-            </p>
-            <Button
-              aria-label="Next"
-              disabled={pagination.pageIndex === Math.ceil(transactions.count / pagination.pageSize) - 1}
-              onClick={() => setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })}
-            >
-              <GrFormNext />
-            </Button>
-          </div>
-        ) : null}
+        {transactions?.count && (
+          <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
+        )}
       </div>
 
       <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={userId} />

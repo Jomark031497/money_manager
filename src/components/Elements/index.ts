@@ -4,3 +4,4 @@ export * from './Spinner';
 export * from './InputField';
 export * from './DropdownMenu';
 export * from './SelectField';
+export * from './Pagination';
