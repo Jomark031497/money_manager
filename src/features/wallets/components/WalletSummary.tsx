@@ -23,7 +23,7 @@ export const WalletSummary = ({ userId }: { userId: string }) => {
         <SelectField selected={selected} setSelected={setSelected} />
       </div>
       {summary ? (
-        <div className="grid h-[80px] grid-cols-3 items-center justify-evenly rounded-xl border bg-gray-100 p-2 shadow">
+        <div className="grid h-[80px] grid-cols-3 items-center justify-evenly rounded-xl border bg-gray-50 p-2 shadow">
           <div className="col-span-1 flex flex-col items-center rounded p-2 text-red-600">
             <p className="text-xs font-semibold">Expenses</p>
             <p className="text-sm font-bold">{toCurrency(summary.totalExpenses)}</p>

@@ -19,7 +19,7 @@ export const Wallets = ({ userId }: { userId: string }) => {
         </Button>
       </div>
 
-      <div ref={parent} className="flex flex-col gap-1 rounded-xl bg-gray-50 p-2 shadow">
+      <div ref={parent} className="flex flex-col gap-1 rounded-xl border bg-gray-50 p-2 shadow">
         {isWalletsLoading ? (
           <>
             <WalletCardSkeleton />

@@ -3,7 +3,6 @@ import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransac
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-
 import { RiExchangeBoxFill } from 'react-icons/ri';
 
 interface Props {
@@ -36,7 +35,7 @@ export const Transactions = ({ userId }: Props) => {
         </Button>
       </div>
 
-      <div ref={parent} className="flex flex-col gap-2 rounded-xl bg-gray-100 p-2">
+      <div ref={parent} className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
         {isTransactionsLoading ? (
           <>
             <TransactionCardSkeleton />

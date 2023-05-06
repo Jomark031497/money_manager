@@ -13,8 +13,10 @@ export const TransactionCard = ({ transaction }: Props) => {
     <Link
       href={`/transactions/${transaction.id}`}
       className={classNames(
-        'grid grid-cols-4 gap-0 rounded-xl p-2 shadow',
-        transaction.type === 'EXPENSE' ? 'bg-red-200 text-red-800' : 'bg-green-100 text-green-600',
+        'grid grid-cols-4 gap-0 rounded-xl p-2 shadow-md transition-all',
+        transaction.type === 'EXPENSE'
+          ? 'bg-red-100 text-red-700 hover:bg-red-200'
+          : 'bg-green-100 text-green-600 hover:bg-green-200',
       )}
     >
       <p className="col-span-2 text-xs font-semibold">{transaction.name}</p>
