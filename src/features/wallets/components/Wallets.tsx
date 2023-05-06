@@ -11,7 +11,7 @@ export const Wallets = ({ userId }: { userId: string }) => {
 
   return (
     <>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-2 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Wallets</p>
         <Button onClick={() => openCreate()} className="flex items-center gap-1">
           <FaWallet className="text-xl" />
@@ -19,7 +19,7 @@ export const Wallets = ({ userId }: { userId: string }) => {
         </Button>
       </div>
 
-      <div ref={parent} className="flex flex-col gap-2 rounded-xl bg-gray-100 p-2">
+      <div ref={parent} className="flex flex-col gap-1 rounded-xl bg-gray-50 p-2 shadow">
         {isWalletsLoading ? (
           <>
             <WalletCardSkeleton />
