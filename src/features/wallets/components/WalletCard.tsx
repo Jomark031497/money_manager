@@ -12,7 +12,7 @@ export const WalletCard = ({ wallet }: Props) => {
     <Link
       key={wallet.id}
       href={`/wallets/${wallet.id}`}
-      className="my-auto grid grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-1 text-white shadow"
+      className="my-auto grid grid-cols-4 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 px-2 py-1 text-white shadow"
     >
       <div className="col-span-3 flex items-center gap-1">
         <span className="flex h-8 w-8 items-center justify-center rounded-full border bg-white text-xl">

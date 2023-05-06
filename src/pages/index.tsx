@@ -36,7 +36,7 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
         />
       </Head>
 
-      <div className="mx-auto flex max-w-xl flex-col gap-8 p-4">
+      <div className="mx-auto flex max-w-xl flex-col gap-6 p-4">
         <section>
           <Wallets userId={user.id} />
         </section>
