@@ -13,14 +13,14 @@ export const TransactionCard = ({ transaction }: Props) => {
     <Link
       href={`/transactions/${transaction.id}`}
       className={classNames(
-        'grid grid-cols-4 gap-0 rounded-xl p-2 shadow-md transition-all',
+        'grid grid-cols-4 gap-0 rounded p-2 shadow transition-all',
         transaction.type === 'EXPENSE'
-          ? 'bg-red-100 text-red-700 hover:bg-red-200'
-          : 'bg-green-100 text-green-600 hover:bg-green-200',
+          ? 'bg-red-50 text-red-600 hover:bg-red-100'
+          : 'bg-green-50 text-green-600 hover:bg-green-100',
       )}
     >
       <p className="col-span-2 text-xs font-semibold">{transaction.name}</p>
-      <p className="col-span-2 justify-self-end text-xs">
+      <p className="col-span-2 justify-self-end text-xs font-semibold">
         {transaction.type === 'EXPENSE' ? '-' : '+'} {toCurrency(transaction.amount)}
       </p>
       <div className="col-span-2 flex items-center gap-1 text-xs">
