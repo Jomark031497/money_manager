@@ -10,7 +10,7 @@ export const Navbar = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <header className="mx-auto flex h-16 max-w-md items-center justify-between bg-white p-2 px-4">
+    <header className="mx-auto flex h-16 max-w-md items-center justify-between bg-white p-2 px-4 shadow">
       <Link href="/" className="relative text-lg font-semibold tracking-tighter">
         <span>money</span>
         <span className="text-primary">trackr</span>

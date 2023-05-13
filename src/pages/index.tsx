@@ -41,7 +41,7 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
         />
       </Head>
 
-      <div className="mx-auto flex max-w-md flex-col gap-6 p-4">
+      <div className="mx-auto flex max-w-md flex-col gap-6 p-4 shadow">
         <section>
           <Wallets userId={user.id} />
         </section>
@@ -51,15 +51,14 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
         </section>
 
         <section>
-          <div className="mb-4 flex items-center justify-between">
-            <p className="font-semibold text-gray-500">Recent Transactions</p>
-            <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
-              <RiExchangeBoxFill className="text-xl" />
-              Create Transaction
-            </Button>
-          </div>
-
           <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+            <div className="mb-2 flex items-center justify-between">
+              <p className="truncate font-semibold text-gray-500">Recent Transactions</p>
+              <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
+                <RiExchangeBoxFill className="text-xl" />
+                Create Transaction
+              </Button>
+            </div>
             {transactions ? (
               <Transactions transactions={transactions.data} />
             ) : (
