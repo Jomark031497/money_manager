@@ -1,12 +1,10 @@
 import Head from 'next/head';
 import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import { AiOutlineTwitter } from 'react-icons/ai';
 import { RiTestTubeFill } from 'react-icons/ri';
 import { GetServerSidePropsContext } from 'next';
 import { getServerAuthSession } from '@/server/auth';
-import { Button } from '@/components/Elements';
-import { AiFillGold } from 'react-icons/ai';
 import { signIn } from 'next-auth/react';
-import { toast } from 'react-toastify';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -43,28 +41,40 @@ export default function Login() {
         />
       </Head>
 
-      <div className="mx-auto flex h-screen items-center justify-center p-4">
-        <div className="mx-auto flex w-full max-w-xs flex-col items-center gap-4 rounded-xl border border-gray-200 p-4">
-          <div className="flex flex-col items-center">
-            <AiFillGold className="text-4xl" />
-            <p className="text-xl">Momney Manager</p>
-          </div>
+      <div className="mx-auto flex h-screen items-center p-4">
+        <div className="relative mx-auto max-w-sm grow gap-4 rounded-xl border border-gray-200 px-8 pb-4 pt-8 shadow-2xl">
+          <h1 className="relative mb-6 text-lg font-semibold tracking-tighter">
+            <span>money</span>
+            <span className="text-primary">trackr</span>
+            {/* <sup className="absolute top-0 text-xs font-normal">[beta]</sup> */}
+          </h1>
 
-          <div className="flex flex-col gap-2">
-            <Button onClick={() => signIn('discord', { callbackUrl: '/' })} className="flex items-center">
-              <FaDiscord className="mr-2 text-2xl" />
-              Login via Discord
-            </Button>
+          <h2 className="mb-1 text-xl font-semibold">Sign In</h2>
+          <p className="text-sm text-gray-500">to continue to moneytrackr</p>
 
-            <Button onClick={() => toast.info('This feature is not yet implemented')} className="flex items-center">
-              <FaGoogle className="mr-2 text-2xl" />
-              Login via Google
-            </Button>
+          <div className="flex flex-col items-center py-4">
+            <button
+              onClick={() => signIn('discord', { callbackUrl: '/' })}
+              className="mb-2 flex w-full items-center gap-4 rounded border border-gray-200 p-2 text-sm text-[#7289DA] transition-all hover:bg-gray-100"
+            >
+              <FaDiscord className="text-xl" />
+              <span>Login via Discord</span>
+            </button>
 
-            <Button onClick={() => toast.info('This feature is not yet implemented')} className="flex items-center">
-              <RiTestTubeFill className="mr-2 text-2xl" />
-              Try Demo Version
-            </Button>
+            <button className="mb-2 flex w-full items-center gap-4 rounded border border-gray-200 p-2 text-sm text-[#DB4437] transition-all hover:bg-gray-100">
+              <FaGoogle className="text-xl" />
+              <span>Login via Google</span>
+            </button>
+
+            <button className="mb-2 flex w-full items-center gap-4 rounded border border-gray-200 p-2 text-sm text-[#1DA1F2] transition-all hover:bg-gray-100">
+              <AiOutlineTwitter className="text-xl" />
+              <span>Login via Twitter</span>
+            </button>
+
+            <button className="text-secondary flex w-full items-center gap-4 rounded border border-gray-200 p-2 text-sm transition-all hover:bg-gray-100">
+              <RiTestTubeFill className="text-xl" />
+              <span>Try Demo Version</span>
+            </button>
           </div>
         </div>
       </div>

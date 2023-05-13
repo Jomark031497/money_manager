@@ -17,7 +17,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(({ label, formErro
           {...rest}
           ref={ref}
           className={classNames(
-            'mt-1 w-full appearance-none rounded border-2 p-2 px-3 leading-tight text-gray-500 shadow outline-none transition-all hover:border-primary focus:border-primary',
+            'mt-1 w-full appearance-none rounded border-2 px-2 py-[0.5rem] text-gray-500 shadow outline-none transition-all hover:border-primary focus:border-primary',
             formError ? 'border-red-500' : 'border-inherit',
           )}
         />

@@ -1,24 +1,29 @@
-import { WalletSummary, Wallets } from '@/features/wallets';
+import { WalletSummary, Wallets, useWalletsSummary } from '@/features/wallets';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-import { Transactions } from '@/features/transactions';
+import {
+  CreateTransaction,
+  TransactionSkeletonContainer,
+  Transactions,
+  useTransactions,
+} from '@/features/transactions';
 import { getServerAuthSession } from '@/server/auth';
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
-
-  if (!session) {
-    return {
-      redirect: { destination: '/login', permanent: false },
-    };
-  }
-
-  return {
-    props: { user: session.user },
-  };
-}
+import { Button, Pagination } from '@/components/Elements';
+import { useModal } from '@/hooks/useModal';
+import { usePagination } from '@/hooks/usePagination';
+import { RiExchangeBoxFill } from 'react-icons/ri';
 
 export default function Home({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { pagination, setPagination } = usePagination({ pageIndex: 0, pageSize: 5 });
+  const { data: transactions } = useTransactions({
+    id: user.id,
+    options: { skip: pagination.pageIndex, take: pagination.pageSize },
+  });
+
+  const { data: summary } = useWalletsSummary({ userId: user.id });
+
+  const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
+
   return (
     <>
       <Head>
@@ -36,19 +41,51 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
         />
       </Head>
 
-      <div className="mx-auto flex max-w-xl flex-col gap-6 p-4">
+      <div className="mx-auto flex max-w-md flex-col gap-6 p-4">
         <section>
           <Wallets userId={user.id} />
         </section>
 
         <section>
-          <WalletSummary userId={user.id} />
+          <WalletSummary userId={user.id} summary={summary} />
         </section>
 
         <section>
-          <Transactions userId={user.id} />
+          <div className="mb-4 flex items-center justify-between">
+            <p className="font-semibold text-gray-500">Recent Transactions</p>
+            <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
+              <RiExchangeBoxFill className="text-xl" />
+              Create Transaction
+            </Button>
+          </div>
+
+          <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+            {transactions ? (
+              <Transactions transactions={transactions.data} />
+            ) : (
+              <TransactionSkeletonContainer count={5} />
+            )}
+            {transactions?.count ? (
+              <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
+            ) : null}
+          </div>
         </section>
       </div>
+      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
     </>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
+
+  if (!session) {
+    return {
+      redirect: { destination: '/login', permanent: false },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
 }

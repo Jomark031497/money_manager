@@ -11,7 +11,7 @@ export * from './components/TransactionCard';
 export * from './components/CreateTransaction';
 export * from './components/UpdateTransaction';
 export * from './components/Transactions';
-export * from './components/TransactionCardSkeleton';
+export * from './components/TransactionSkeletonContainer';
 export * from './components/DeleteTransaction';
 
 // Hooks

@@ -1,19 +1,20 @@
-import Link from 'next/link';
-import { AiFillGold } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import { signOut, useSession } from 'next-auth/react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Image from 'next/image';
+import { classNames } from '@/utils/classNames';
+import Link from 'next/link';
 
 export const Navbar = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <header className="mx-auto flex h-16 max-w-xl items-center justify-between bg-gray-100 p-2 px-4">
-      <Link href="/" className="flex gap-1 text-lg font-semibold text-primary transition-all hover:text-primary-dark">
-        <AiFillGold className="text-3xl" />
-        Momney
+    <header className="mx-auto flex h-16 max-w-md items-center justify-between bg-white p-2 px-4">
+      <Link href="/" className="relative text-lg font-semibold tracking-tighter">
+        <span>money</span>
+        <span className="text-primary">trackr</span>
+        <sup className="absolute top-0 ml-1 text-xs font-normal">[beta]</sup>
       </Link>
 
       {sessionData && (
@@ -25,7 +26,7 @@ export const Navbar = () => {
               height={50}
               width={50}
               priority
-              className="rounded-full hover:opacity-50"
+              className="rounded-full transition-all hover:opacity-50"
             />
           </Menu.Button>
 
@@ -44,9 +45,10 @@ export const Navbar = () => {
                   {({ active }) => (
                     <button
                       onClick={() => signOut({ callbackUrl: '/login' })}
-                      className={`${
-                        active ? 'bg-primary text-white' : 'text-gray-500'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      className={classNames(
+                        'flex w-full items-center rounded-md px-2 py-2 text-sm transition-all',
+                        active ? 'bg-secondary text-white' : 'text-gray-500',
+                      )}
                     >
                       <FiLogOut className="mr-1 text-lg" />
                       Logout

@@ -38,7 +38,7 @@ export const Modal = ({ children, title, isOpen, onClose }: Props) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className={`w-full max-w-xs rounded bg-white md:max-w-sm`}>
-              <div ref={initialFocusRef} className="relative rounded bg-gray-200 p-4">
+              <div ref={initialFocusRef} className="relative rounded bg-gray-200 p-4 py-3">
                 <Dialog.Title className="text-md font-semibold text-gray-500">{title}</Dialog.Title>
 
                 <button

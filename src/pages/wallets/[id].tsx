@@ -1,10 +1,14 @@
 import { Button, DropdownMenu, Pagination } from '@/components/Elements';
-import { CreateTransaction, TransactionCard, TransactionCardSkeleton, useTransactions } from '@/features/transactions';
-import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeleton, useWallet } from '@/features/wallets';
+import {
+  CreateTransaction,
+  TransactionSkeletonContainer,
+  Transactions,
+  useTransactions,
+} from '@/features/transactions';
+import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeletonContainer, useWallet } from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { getServerAuthSession } from '@/server/auth';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Menu } from '@headlessui/react';
 import { GetServerSidePropsContext } from 'next';
 import { Session } from 'next-auth';
@@ -12,22 +16,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AiFillDelete, AiFillEdit, AiFillSetting, AiOutlinePlus } from 'react-icons/ai';
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { user: session.user },
-  };
-}
 export default function Wallet({ user }: { user: Session['user'] }) {
   const { pagination, setPagination } = usePagination({
     pageIndex: 0,
@@ -38,7 +26,7 @@ export default function Wallet({ user }: { user: Session['user'] }) {
   const id = router.query.id as string;
 
   const { data: wallet, isLoading, isError } = useWallet(id);
-  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions({
+  const { data: transactions } = useTransactions({
     id: user.id,
     options: {
       filterColumn: 'walletId',
@@ -47,7 +35,6 @@ export default function Wallet({ user }: { user: Session['user'] }) {
       take: pagination.pageSize,
     },
   });
-  const [parent] = useAutoAnimate();
 
   const { open: openUpdate, isOpen: isUpdateOpen, close: closeUpdate } = useModal();
   const { open: openDelete, isOpen: isDeleteOpen, close: closeDelete } = useModal();
@@ -73,7 +60,7 @@ export default function Wallet({ user }: { user: Session['user'] }) {
       </Head>
 
       <div className="mx-auto max-w-xl p-4">
-        <section className="mb-8">
+        <section className="mb-8 mt-2">
           <div className="mb-4 flex items-center justify-between">
             <p className="font-semibold text-gray-500">Wallet Details</p>
 
@@ -115,7 +102,7 @@ export default function Wallet({ user }: { user: Session['user'] }) {
           </div>
 
           {isLoading ? (
-            <WalletCardSkeleton />
+            <WalletCardSkeletonContainer />
           ) : (
             <>
               <WalletCard wallet={wallet} />
@@ -134,30 +121,37 @@ export default function Wallet({ user }: { user: Session['user'] }) {
             </Button>
           </div>
 
-          <div ref={parent} className="flex flex-col gap-2 rounded-xl bg-gray-100 p-2">
-            {isTransactionsLoading ? (
-              <>
-                <TransactionCardSkeleton />
-                <TransactionCardSkeleton />
-                <TransactionCardSkeleton />
-                <TransactionCardSkeleton />
-                <TransactionCardSkeleton />
-              </>
-            ) : transactions?.data.length ? (
-              transactions.data.map((transaction) => <TransactionCard transaction={transaction} key={transaction.id} />)
+          <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+            {transactions ? (
+              <Transactions transactions={transactions.data} />
             ) : (
-              <p className="text-md text-center font-semibold text-gray-500">
-                You have no transactions in this wallet.
-              </p>
+              <TransactionSkeletonContainer count={5} />
             )}
+            {transactions?.count ? (
+              <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
+            ) : null}
           </div>
-          {transactions?.count && (
-            <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
-          )}
 
           <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
         </section>
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
 }

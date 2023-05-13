@@ -1,16 +1,38 @@
-import { classNames } from '@/utils/classNames';
-
 interface Props {
-  height?: string | number;
+  count?: number;
 }
 
-export const WalletCardSkeleton = ({ height = 80 }: Props) => {
+const Skeleton = () => {
   return (
-    <div className={classNames('my-auto flex animate-pulse flex-col rounded-lg bg-gray-300 p-2', `h-[${height}px]`)}>
-      <div className="mb-2 h-2.5 w-32 rounded-full bg-gray-700" />
-      <div className="mb-4 h-2.5 w-40 rounded-full bg-gray-700" />
-      <div className="mb-2 h-2.5 w-32 place-self-end rounded-full bg-gray-700" />
-      <div className="mb-2 h-3 w-40 place-self-end rounded-full bg-gray-700" />
+    <div className="my-auto grid h-[52px] animate-pulse grid-cols-4 rounded bg-gray-300 p-2">
+      <div className="col-span-2 flex items-center gap-1">
+        <div className="h-8 w-8 rounded-full bg-gray-700" />
+
+        <div>
+          <div className=" mb-2 h-2 w-36 rounded-full bg-gray-700" />
+          <div className=" h-1.5 w-32 rounded-full bg-gray-700" />
+        </div>
+      </div>
+      <div className="col-span-2 flex flex-col items-end justify-center">
+        <div className="mb-2 h-1.5 w-32 rounded-full bg-gray-700"></div>
+        <div className="h-2 w-24 rounded-full bg-gray-700"></div>
+      </div>
     </div>
+  );
+};
+
+export const WalletCardSkeletonContainer = ({ count = 1 }: Props) => {
+  const skeletons = [];
+
+  for (let i = 0; i < count; i++) {
+    skeletons.push(<Skeleton key={i} />);
+  }
+
+  return (
+    <>
+      <div role="status" className="flex flex-col gap-1">
+        {skeletons}
+      </div>
+    </>
   );
 };

@@ -1,5 +1,10 @@
 import { DropdownMenu } from '@/components/Elements';
-import { DeleteTransaction, TransactionCardSkeleton, UpdateTransaction, useTransaction } from '@/features/transactions';
+import {
+  DeleteTransaction,
+  TransactionSkeletonContainer,
+  UpdateTransaction,
+  useTransaction,
+} from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
 import { getServerAuthSession } from '@/server/auth';
 import { classNames } from '@/utils/classNames';
@@ -98,8 +103,8 @@ export default function Transaction() {
           </section>
           {isLoading ? (
             <div role="status" className="flex flex-col gap-2">
-              <TransactionCardSkeleton />
-              <TransactionCardSkeleton />
+              <TransactionSkeletonContainer />
+              <TransactionSkeletonContainer />
             </div>
           ) : (
             <>

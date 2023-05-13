@@ -1,4 +1,4 @@
-import { WalletCardSkeleton, useWalletsSummary } from '@/features/wallets';
+import { WalletCardSkeletonContainer } from '@/features/wallets';
 import { toCurrency } from '@/utils/toCurrency';
 import { Listbox, Transition } from '@headlessui/react';
 import { Dispatch, Fragment, SetStateAction, useState } from 'react';
@@ -12,9 +12,17 @@ interface SelectFieldProps {
   setSelected: Dispatch<SetStateAction<string>>;
 }
 
-export const WalletSummary = ({ userId }: { userId: string }) => {
+interface Props {
+  userId: string;
+  summary?: {
+    totalBalance: number;
+    totalExpenses: number;
+    totalIncome: number;
+  };
+}
+
+export const WalletSummary = ({ summary }: Props) => {
   const [selected, setSelected] = useState(summaryOptions[0]);
-  const { data: summary } = useWalletsSummary({ userId });
 
   return (
     <>
@@ -40,7 +48,7 @@ export const WalletSummary = ({ userId }: { userId: string }) => {
           </div>
         </div>
       ) : (
-        <WalletCardSkeleton />
+        <WalletCardSkeletonContainer />
       )}
     </>
   );
