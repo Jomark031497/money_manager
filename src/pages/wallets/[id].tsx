@@ -5,10 +5,19 @@ import {
   Transactions,
   useTransactions,
 } from '@/features/transactions';
-import { DeleteWallet, UpdateWallet, WalletCard, WalletCardSkeletonContainer, useWallet } from '@/features/wallets';
+import {
+  DeleteWallet,
+  UpdateWallet,
+  WalletCard,
+  WalletCardSkeletonContainer,
+  WalletSummary,
+  useWallet,
+  useWalletsSummary,
+} from '@/features/wallets';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { getServerAuthSession } from '@/server/auth';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Menu } from '@headlessui/react';
 import { GetServerSidePropsContext } from 'next';
 import { Session } from 'next-auth';
@@ -17,13 +26,14 @@ import { useRouter } from 'next/router';
 import { AiFillDelete, AiFillEdit, AiFillSetting, AiOutlinePlus } from 'react-icons/ai';
 
 export default function Wallet({ user }: { user: Session['user'] }) {
+  const router = useRouter();
+  const id = router.query.id as string;
+  const [parent] = useAutoAnimate();
+
   const { pagination, setPagination } = usePagination({
     pageIndex: 0,
     pageSize: 5,
   });
-
-  const router = useRouter();
-  const id = router.query.id as string;
 
   const { data: wallet, isLoading, isError } = useWallet(id);
   const { data: transactions } = useTransactions({
@@ -35,6 +45,8 @@ export default function Wallet({ user }: { user: Session['user'] }) {
       take: pagination.pageSize,
     },
   });
+
+  const { data: summary } = useWalletsSummary({ userId: user.id, query: { walletId: id } });
 
   const { open: openUpdate, isOpen: isUpdateOpen, close: closeUpdate } = useModal();
   const { open: openDelete, isOpen: isDeleteOpen, close: closeDelete } = useModal();
@@ -59,8 +71,8 @@ export default function Wallet({ user }: { user: Session['user'] }) {
         />
       </Head>
 
-      <div className="mx-auto max-w-xl p-4">
-        <section className="mb-8 mt-2">
+      <div className="mx-auto flex max-w-md flex-col gap-5 p-4">
+        <section ref={parent} className="mt-2 rounded border bg-gray-50 p-2 shadow">
           <div className="mb-4 flex items-center justify-between">
             <p className="font-semibold text-gray-500">Wallet Details</p>
 
@@ -112,7 +124,9 @@ export default function Wallet({ user }: { user: Session['user'] }) {
           )}
         </section>
 
-        <section>
+        <WalletSummary userId={user.id} summary={summary} />
+
+        <section className="mt-2 rounded border bg-gray-50 p-2 shadow">
           <div className="mb-4 flex items-center justify-between">
             <p className="font-semibold text-gray-500">Transactions</p>
             <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
@@ -121,11 +135,11 @@ export default function Wallet({ user }: { user: Session['user'] }) {
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+          <div ref={parent} className="flex flex-col gap-2">
             {transactions ? (
               <Transactions transactions={transactions.data} />
             ) : (
-              <TransactionSkeletonContainer count={5} />
+              <TransactionSkeletonContainer count={2} />
             )}
             {transactions?.count ? (
               <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />

@@ -34,19 +34,19 @@ export const WalletSummary = ({ summary }: Props) => {
       </div>
       {summary ? (
         <div className="grid grid-cols-3 items-center justify-evenly rounded bg-gray-200">
-          <div className="col-span-1 flex flex-col items-center rounded p-2 text-red-600">
-            <p className="text-xs font-semibold">Expenses</p>
-            <p className="text-sm font-bold">{toCurrency(summary.totalExpenses)}</p>
+          <div className="col-span-1 flex flex-col items-center rounded p-2">
+            <p className="text-xs font-semibold text-gray-500">Expenses</p>
+            <p className="text-sm font-bold text-red-600">{toCurrency(summary.totalExpenses)}</p>
           </div>
 
-          <div className="col-span-1 flex flex-col items-center rounded p-2 text-green-600">
-            <p className="text-xs font-semibold">Income</p>
-            <p className="text-sm font-bold">{toCurrency(summary.totalIncome)}</p>
+          <div className="col-span-1 flex flex-col items-center rounded p-2">
+            <p className="text-xs font-semibold text-gray-500">Income</p>
+            <p className="text-sm font-bold text-green-600">{toCurrency(summary.totalIncome)}</p>
           </div>
 
           <div className="items col-span-1 flex flex-col items-center p-2">
             <p className="text-xs font-semibold text-gray-500">Balance</p>
-            <p className="text-sm font-bold text-gray-500">{toCurrency(summary.totalBalance)}</p>
+            <p className="text-sm font-bold text-primary">{toCurrency(summary.totalBalance)}</p>
           </div>
         </div>
       ) : (
@@ -60,10 +60,10 @@ const SelectField = ({ selected, setSelected }: SelectFieldProps) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
       <div className="relative mt-1">
-        <Listbox.Button className="border-secondary relative w-[130px] cursor-pointer rounded border bg-white py-1 pl-3 pr-10 text-left text-gray-500 shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-          <span className="block truncate text-sm font-semibold">{selected}</span>
+        <Listbox.Button className="relative w-[130px] cursor-pointer rounded border border-secondary bg-white py-1 pl-3 pr-10 text-left text-gray-500 shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+          <span className="block truncate text-sm font-semibold text-secondary">{selected}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <BiExpandVertical className="text-secondary h-5 w-5" aria-hidden="true" />
+            <BiExpandVertical className="h-5 w-5 text-secondary" aria-hidden="true" />
           </span>
         </Listbox.Button>
         <Transition

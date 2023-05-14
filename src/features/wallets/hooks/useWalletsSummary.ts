@@ -1,17 +1,16 @@
+import { IWalletInputs, getWalletSummary } from '@/features/wallets';
 import { useQuery } from '@tanstack/react-query';
 
-export const useWalletsSummary = ({ userId }: { userId: string }) => {
+interface Props {
+  userId: string;
+  query?: IWalletInputs['query'];
+}
+export const useWalletsSummary = ({ userId, query }: Props) => {
   return useQuery(
-    ['walletsSummary'],
-    async () => {
-      const response = await fetch(`/api/wallets/summary/${userId}`, {
-        method: 'GET',
-      });
-
-      const data = await response.json();
-
-      return data as { totalBalance: number; totalExpenses: number; totalIncome: number };
+    ['walletsSummary', userId, query?.walletId, query?.dateRange],
+    async () => getWalletSummary({ userId, query }),
+    {
+      keepPreviousData: true,
     },
-    { keepPreviousData: true },
   );
 };

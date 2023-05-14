@@ -4,6 +4,7 @@ export * from './api/createWallet';
 export * from './api/getOneWallet';
 export * from './api/updateWallet';
 export * from './api/deleteWallet';
+export * from './api/getWalletSummary';
 
 // Components
 export * from './components/WalletCard';

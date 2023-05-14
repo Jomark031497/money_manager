@@ -12,6 +12,7 @@ import { Button, Pagination } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { RiExchangeBoxFill } from 'react-icons/ri';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function Home({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { pagination, setPagination } = usePagination({ pageIndex: 0, pageSize: 5 });
@@ -20,9 +21,16 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
     options: { skip: pagination.pageIndex, take: pagination.pageSize },
   });
 
-  const { data: summary } = useWalletsSummary({ userId: user.id });
+  const { data: summary } = useWalletsSummary({
+    userId: user.id,
+    query: {
+      dateRange: 'This Year',
+    },
+  });
 
   const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
+
+  const [parent] = useAutoAnimate();
 
   return (
     <>
@@ -42,16 +50,14 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
       </Head>
 
       <div className="mx-auto flex max-w-md flex-col gap-5 p-4 shadow">
-        <section>
-          <Wallets userId={user.id} />
-        </section>
+        <Wallets userId={user.id} />
 
         <section>
           <WalletSummary userId={user.id} summary={summary} />
         </section>
 
         <section>
-          <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+          <div ref={parent} className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
             <div className="mb-2 flex items-center justify-between">
               <p className="truncate font-semibold text-gray-500">Recent Transactions</p>
               <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">

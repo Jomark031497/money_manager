@@ -12,6 +12,8 @@ export const WalletSchema = z.object({
     id: z.string().optional(),
     skip: z.string().optional(),
     take: z.string().optional(),
+    walletId: z.string().optional(),
+    dateRange: z.string().optional(),
   }),
 });
 

@@ -2,32 +2,25 @@ import { FiLogOut } from 'react-icons/fi';
 import { signOut, useSession } from 'next-auth/react';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import Link from 'next/link';
+import { BiMenuAltRight } from 'react-icons/bi';
 
 export const Navbar = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <header className="mx-auto flex h-16 max-w-md items-center justify-between bg-white p-2 px-4 shadow">
-      <Link href="/" className="relative text-lg font-semibold tracking-tighter">
-        <span>money</span>
-        <span className="text-primary">trackr</span>
+    <header className="mx-auto flex h-16 max-w-md items-center justify-between p-2 px-4 shadow">
+      <Link href="/" className="relative text-lg tracking-tighter">
+        <span className="font-normal">money</span>
+        <span className="text-primary font-semibold">trackr</span>
         <sup className="absolute top-0 ml-1 text-xs font-normal">[beta]</sup>
       </Link>
 
       {sessionData && (
         <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button className="flex items-center justify-center">
-            <Image
-              src={sessionData.user.image}
-              alt="User Profile Image"
-              height={50}
-              width={50}
-              priority
-              className="rounded-full transition-all hover:opacity-50"
-            />
+          <Menu.Button className="flex items-center justify-center text-2xl">
+            <BiMenuAltRight />
           </Menu.Button>
 
           <Transition

@@ -7,8 +7,8 @@ interface Props {
 
 export const usePagination = ({ pageSize, pageIndex }: Props) => {
   const [pagination, setPagination] = useState({
-    pageIndex: pageIndex,
-    pageSize: pageSize,
+    pageIndex,
+    pageSize,
   });
 
   return { pagination, setPagination };
