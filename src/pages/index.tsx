@@ -11,7 +11,6 @@ import { Button, Pagination } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { RiExchangeBoxFill } from 'react-icons/ri';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { getServerAuthSession } from '@/server/auth';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -47,9 +46,11 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
     },
   });
 
-  const { open: openCreateTransaction, isOpen: isCreateTransactionOpen, close: closeCreateTransaction } = useModal();
-
-  const [parent] = useAutoAnimate();
+  const {
+    open: openCreateTransaction,
+    isOpen: isCreateTransactionOpen,
+    close: closeCreateTransaction,
+  } = useModal();
 
   return (
     <>
@@ -74,7 +75,7 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
         <WalletSummary userId={user.id} summary={summary} />
 
         <section>
-          <div ref={parent} className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
+          <div className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
             <div className="mb-2 flex items-center justify-between">
               <p className="truncate font-semibold text-gray-500">Recent Transactions</p>
               <Button onClick={() => openCreateTransaction()} className="flex items-center gap-1">
@@ -88,12 +89,20 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
               <TransactionSkeletonContainer count={5} />
             )}
             {transactions?.count ? (
-              <Pagination count={transactions.count} pagination={pagination} setPagination={setPagination} />
+              <Pagination
+                count={transactions.count}
+                pagination={pagination}
+                setPagination={setPagination}
+              />
             ) : null}
           </div>
         </section>
       </div>
-      <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
+      <CreateTransaction
+        isOpen={isCreateTransactionOpen}
+        close={closeCreateTransaction}
+        userId={user.id}
+      />
     </>
   );
 }
