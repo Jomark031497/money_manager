@@ -1,6 +1,6 @@
 import { Modal, Button, Spinner } from '@/components/Elements';
 import { ITransactionWithWallet, deleteTransaction } from '@/features/transactions';
-import { queryClient } from '@/lib/client';
+import { queryClient } from '@/lib/queryClient';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

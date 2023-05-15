@@ -1,7 +1,7 @@
 import { IWalletInputs, WalletSchema, updateWallet } from '@/features/wallets';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { queryClient } from '@/lib/client';
+import { queryClient } from '@/lib/queryClient';
 import { toast } from 'react-toastify';
 import { Button, InputField, Modal, Spinner } from '@/components/Elements';
 import { useSession } from 'next-auth/react';

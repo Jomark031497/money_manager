@@ -1,7 +1,7 @@
 import { IWalletInputs, WalletSchema, createWallet } from '@/features/wallets';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { queryClient } from '@/lib/client';
+import { queryClient } from '@/lib/queryClient';
 import { toast } from 'react-toastify';
 import { Button, InputField, Modal, Spinner } from '@/components/Elements';
 import { useMutation } from '@tanstack/react-query';
@@ -123,7 +123,7 @@ export const CreateWallet = ({ isOpen, close, userId }: Props) => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="grow border-primary bg-primary py-2 text-white hover:border-primary-dark hover:bg-primary-dark"
+            className="border-primary bg-primary hover:border-primary-dark hover:bg-primary-dark grow py-2 text-white"
           >
             {isSubmitting ? <Spinner /> : 'Create'}
           </Button>

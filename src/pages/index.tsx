@@ -7,12 +7,31 @@ import {
   Transactions,
   useTransactions,
 } from '@/features/transactions';
-import { getServerAuthSession } from '@/server/auth';
 import { Button, Pagination } from '@/components/Elements';
 import { useModal } from '@/hooks/useModal';
 import { usePagination } from '@/hooks/usePagination';
 import { RiExchangeBoxFill } from 'react-icons/ri';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { getServerAuthSession } from '@/server/auth';
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user: session.user,
+    },
+  };
+};
 
 export default function Home({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { pagination, setPagination } = usePagination({ pageIndex: 0, pageSize: 5 });
@@ -52,9 +71,7 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
       <div className="mx-auto flex max-w-md flex-col gap-5 p-4 shadow">
         <Wallets userId={user.id} />
 
-        <section>
-          <WalletSummary userId={user.id} summary={summary} />
-        </section>
+        <WalletSummary userId={user.id} summary={summary} />
 
         <section>
           <div ref={parent} className="flex flex-col gap-2 rounded-xl border bg-gray-50 p-2 shadow">
@@ -79,18 +96,4 @@ export default function Home({ user }: InferGetServerSidePropsType<typeof getSer
       <CreateTransaction isOpen={isCreateTransactionOpen} close={closeCreateTransaction} userId={user.id} />
     </>
   );
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerAuthSession(context);
-
-  if (!session) {
-    return {
-      redirect: { destination: '/login', permanent: false },
-    };
-  }
-
-  return {
-    props: { user: session.user },
-  };
 }

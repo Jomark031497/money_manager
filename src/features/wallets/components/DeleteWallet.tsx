@@ -1,6 +1,6 @@
 import { Modal, Button, Spinner } from '@/components/Elements';
 import { deleteWallet } from '@/features/wallets';
-import { queryClient } from '@/lib/client';
+import { queryClient } from '@/lib/queryClient';
 import { Wallet } from '@prisma/client';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';

@@ -27,7 +27,7 @@ export const WalletSummary = ({ summary }: Props) => {
   const [parent] = useAutoAnimate();
 
   return (
-    <div ref={parent} className="rounded-xl border bg-gray-50 p-2 shadow">
+    <section ref={parent} className="rounded-xl border bg-gray-50 p-2 shadow">
       <div className="mb-2 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Summary</p>
         <SelectField selected={selected} setSelected={setSelected} />
@@ -46,13 +46,13 @@ export const WalletSummary = ({ summary }: Props) => {
 
           <div className="items col-span-1 flex flex-col items-center p-2">
             <p className="text-xs font-semibold text-gray-500">Balance</p>
-            <p className="text-sm font-bold text-primary">{toCurrency(summary.totalBalance)}</p>
+            <p className="text-primary text-sm font-bold">{toCurrency(summary.totalBalance)}</p>
           </div>
         </div>
       ) : (
         <WalletCardSkeletonContainer />
       )}
-    </div>
+    </section>
   );
 };
 
@@ -90,7 +90,7 @@ const SelectField = ({ selected, setSelected }: SelectFieldProps) => {
                   <>
                     <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>{person}</span>
                     {selected ? (
-                      <span className="group absolute inset-y-0 left-0 flex items-center pl-3 text-primary">
+                      <span className="text-primary group absolute inset-y-0 left-0 flex items-center pl-3">
                         <AiOutlineCheck className="h-5 w-5" aria-hidden="true" />
                       </span>
                     ) : null}

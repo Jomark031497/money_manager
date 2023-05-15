@@ -1,6 +1,6 @@
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { queryClient } from '@/lib/client';
+import { queryClient } from '@/lib/queryClient';
 import { toast } from 'react-toastify';
 import { Button, InputField, Modal, SelectField, Spinner } from '@/components/Elements';
 import { useSession } from 'next-auth/react';
@@ -136,7 +136,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
                     onChange={onChange}
                     selected={value}
                     className={classNames(
-                      'mt-1 w-full appearance-none rounded border-2 p-2 px-3 font-sans leading-tight text-gray-500 shadow outline-none transition-all hover:border-primary focus:border-primary',
+                      'hover:border-primary focus:border-primary mt-1 w-full appearance-none rounded border-2 p-2 px-3 font-sans leading-tight text-gray-500 shadow outline-none transition-all',
                     )}
                   />
                   <AiOutlineCalendar className="absolute inset-y-3 right-2 cursor-pointer text-xl" />
