@@ -38,7 +38,7 @@ export const CreateWallet = ({ isOpen, close, userId }: Props) => {
       queryClient.invalidateQueries(['transactions']);
       reset();
       close();
-      toast.success('Card created successfully.');
+      toast.success('Card Added.');
     },
   });
 
@@ -55,18 +55,21 @@ export const CreateWallet = ({ isOpen, close, userId }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={close} title="Create Wallet">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 p-4">
-        <div className="col-span-3">
-          <label className={'mb-4 flex flex-col gap-1 text-sm font-semibold text-gray-500'}>
-            Emoji
-            <button
-              type="button"
-              onClick={togglePicker}
-              className="flex h-12 w-12 items-center justify-center rounded-full border-2 p-1 text-2xl shadow-lg"
-            >
-              {emojiValue}
-            </button>
-          </label>
-
+        <div className="relative col-span-4 flex items-center gap-1">
+          <InputField
+            label="Wallet Name *"
+            placeholder="Acme Debit Card, X Digital Wallet"
+            formError={errors.name}
+            {...register('name')}
+            inputClassName="pl-10"
+          />
+          <button
+            type="button"
+            onClick={togglePicker}
+            className="absolute left-1 top-7 h-8 w-8 text-2xl"
+          >
+            {emojiValue}
+          </button>
           {isPickerVisible && (
             <div className="absolute">
               <Controller
@@ -88,15 +91,7 @@ export const CreateWallet = ({ isOpen, close, userId }: Props) => {
         </div>
 
         <InputField
-          label="Wallet Name *"
-          placeholder="Acme Debit Card, X Digital Wallet"
-          formError={errors.name}
-          className="col-span-4"
-          {...register('name')}
-        />
-
-        <InputField
-          label="Description *"
+          label="Description"
           placeholder="Payroll, Savings, Credit Card"
           formError={errors.description}
           className="col-span-3"
@@ -123,11 +118,11 @@ export const CreateWallet = ({ isOpen, close, userId }: Props) => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="border-primary bg-primary hover:border-primary-dark hover:bg-primary-dark grow py-2 text-white"
+            className="border-secondary text-secondary hover:bg-secondary hover:text-white"
           >
             {isSubmitting ? <Spinner /> : 'Create'}
           </Button>
-          <Button onClick={close} className="grow py-2">
+          <Button onClick={close} className="grow border-gray-300 py-2 text-gray-500">
             Cancel
           </Button>
         </div>

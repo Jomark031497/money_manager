@@ -35,13 +35,19 @@ export const Wallets = ({ userId }: Props) => {
     <>
       <section>
         <div className="mb-2 flex items-center justify-between">
-          <p className="font-semibold text-gray-500">Wallets</p>
-          <Button onClick={open} className="rounded-full">
-            Create Wallet
+          <p className="text-lg font-semibold tracking-wide text-gray-700">Wallets</p>
+          <Button
+            onClick={open}
+            className="border-secondary text-secondary hover:bg-secondary hover:text-white"
+          >
+            Create
           </Button>
         </div>
 
-        <ul ref={parent} className="flex flex-col gap-2">
+        <ul
+          ref={parent}
+          className="flex flex-col gap-2 rounded-lg border bg-white px-2 py-4 shadow"
+        >
           {isWalletsLoading ? (
             <div role="status">
               <Skeleton />

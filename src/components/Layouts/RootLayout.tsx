@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
-import { Lato } from 'next/font/google';
+import { Figtree } from 'next/font/google';
 import { Navbar } from '@/components/Layouts';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const font = Lato({
+const font = Figtree({
   preload: true,
-  weight: ['400', '700', '900'],
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
 });
 

@@ -6,17 +6,19 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-export const Button = forwardRef<HTMLButtonElement, Props>(({ children, className, ...rest }, ref) => {
-  return (
-    <button
-      ref={ref}
-      {...rest}
-      className={classNames(
-        'rounded bg-secondary px-2 py-1 text-sm font-semibold text-white shadow transition-all hover:bg-secondary-light',
-        className,
-      )}
-    >
-      {children}
-    </button>
-  );
-});
+export const Button = forwardRef<HTMLButtonElement, Props>(
+  ({ children, className, ...rest }, ref) => {
+    return (
+      <button
+        ref={ref}
+        {...rest}
+        className={classNames(
+          'min-w-[100px] rounded border px-2 py-[0.30rem] text-sm font-bold tracking-wide shadow transition-all',
+          className,
+        )}
+      >
+        {children}
+      </button>
+    );
+  },
+);
